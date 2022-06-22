@@ -218,13 +218,13 @@
 						</li>
 
 						<li class="sub-menu">
-							<a href="javascript:;">
+							<a href="{{URL::to('/order_list')}}">
 								<i class="fa fa-book"></i>
-								<span>Đơn hàng</span>
+								<span href="{{URL::to('/order_list')}}" >Đơn hàng</span>
 							</a>
-							<ul class="sub">
+							<!-- <ul class="sub">
 								<li><a href="{{URL::to('/order_list')}}">Quản lý đơn hàng</a></li>
-							</ul>
+							</ul> -->
 						</li>
 
 						<li class="sub-menu">

@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Fronend;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\DB;
 
 class PageController extends Controller
 {
@@ -125,5 +126,16 @@ class PageController extends Controller
         $home_products_size = $data->data->home_products_size;
         // dd($products_new);
         return view('client.detail', compact('sexs', 'images','products', 'home_products_size','home_products_image','product_new','product_cheap','product_expensive'));
+    }
+
+    public function search(Request $request)
+    {
+        
+        $response = Http::post("http://127.0.0.1:8001/api/search/", [
+            'keywords' => $request->key
+        ]);
+        $data = json_decode($response);
+        $search_product = $data->data->product_search;
+        return view('client.search',compact('search_product'));
     }
 }

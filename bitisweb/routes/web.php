@@ -43,6 +43,9 @@ Route::group(['prefix' => 'api'], function () {
     Route::get('findProduct', [HomeController::class, 'findProduct']);
     Route::get('profile', [HomeController::class, 'manangerProfile']);
     Route::get('add_cart',[HomeController::class, 'add_cart']);
+    Route::post('postsignUp', [HomeController::class,'register']);
+    Route::post('search',[HomeController::class, 'search_product']);
+
 
     //
     //Category
@@ -202,9 +205,15 @@ Route::get('/user_list', "App\Http\Controllers\Backend\UserController@listUser")
 Route::get('/user_detail/{id}', "App\Http\Controllers\Backend\UserController@detailUser");
 Route::get('/user_delete/{id}', "App\Http\Controllers\Backend\UserController@deleteUser");
 
+//Order
+
+Route::get('/order_list', "App\Http\Controllers\Backend\OrderController@orderList");
+Route::get("/order_detail/{id}","App\Http\Controllers\Backend\OrderController@orderDetail");
+
 
 //CLIENT
 Route::get('/home', "App\Http\Controllers\Fronend\PageController@index");
+Route::post('/search', "App\Http\Controllers\Fronend\PageController@search");
 Route::get('/contact', "App\Http\Controllers\Fronend\PageController@contact");
 Route::get('/product_single', 'App\Http\Controllers\Fronend\Pagecontroller@detail');
 Route::get('/shop', 'App\Http\Controllers\Fronend\PageController@menu');
@@ -216,7 +225,19 @@ Route::get('/detail/{id}', 'App\Http\Controllers\Fronend\Pagecontroller@getDetai
 
     //cart 
 Route::post('/save_cart', 'App\Http\Controllers\Fronend\CartController@save_cart');
+Route::get('/show_cart', 'App\Http\Controllers\Fronend\CartController@show_cart');
+Route::get('/delete_cart/{rowId}','App\Http\Controllers\Fronend\CartController@delete_cart');
+Route::post('/update_qty', 'App\Http\Controllers\Fronend\CartController@update_qty');
 
+ //Checkout
+Route::get('/login_checkout','App\Http\Controllers\Fronend\CheckoutConttroller@login_checkout');
+Route::post('/login_customer','App\Http\Controllers\Fronend\CheckoutConttroller@login_customer');
+Route::get('/logout_checkout','App\Http\Controllers\Fronend\CheckoutConttroller@logout_checkout');
+Route::post('/add_user', 'App\Http\Controllers\Fronend\CheckoutConttroller@add_user');
+Route::get('/checkout','App\Http\Controllers\Fronend\CheckoutConttroller@checkout');
+Route::post('/save_checkout', 'App\Http\Controllers\Fronend\CheckoutConttroller@save_checkout');
+Route::get('/payment','App\Http\Controllers\Fronend\CheckoutConttroller@payment');
+Route::post('/order_place', 'App\Http\Controllers\Fronend\CheckoutConttroller@order_place');
 
 Auth::routes();
 

@@ -30,30 +30,20 @@ class OrderController extends Controller
 
     public function index()
     {
-        $order = $this->order->getAll();
-        $user = $this->user->getAll();
+        $all_order = $this->order->getAllOrder();
         return response()->json([
             "data"=>[
-                "order"=>$order,
-                "user"=>$user
+                "all_order"=>$all_order
             ]
         ]);
     }
 
     public function show($id)
     {
-        $order = $this->order->getOrderById($id);
-        $order_detail = $this->order_detail->getOrderDetailById($id);
-        $product = OrderDetail::with("product")->where("order_id",$id)->get();
-        $user = User::all()->where('id',$order->user_id);
-        $size = OrderDetail::with("size")->where("order_id",$id)->get();
+        $order_detail = $this->order->getOrderById($id);
         return response()->json([
            "data"=>[
-               "order"=>[$order],
-               "order_detail"=>$order_detail,
-               "user"=>$user,
-               "product"=>$product,
-               "size"=>$size
+               "order"=>$order_detail
            ]
         ]);
     }

@@ -13,6 +13,7 @@ use App\Models\Image;
 use App\Models\Category;
 use App\Models\Sex;
 use App\Models\ProductSize;
+use Illuminate\Support\Facades\Validator;
 
 class HomeController extends Controller
 {
@@ -143,6 +144,53 @@ class HomeController extends Controller
         return response()->json([
             'data' => [
                 'product' => $product
+            ]
+        ]);
+    }
+//ADD user
+    function register(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'name' => 'required',
+            'email' => 'required|email|unique:users,email',
+            'password' => 'required|min:6|max:32',
+            'passwordAgain' => 'required|same:password',
+            'dateOfBirth' => 'required|date',
+            'phone' => 'required|between:10,12',
+            'sex' => 'required|boolean',
+            'address' => 'required'
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json($validator->errors()->toJson(), 400);
+        }
+
+        $user = User::create([
+            'name' => $request->name,
+            'email' => $request->email,
+            'password' => $request->password,
+            'dateOfBirth' => $request->dateOfBirth,
+            'phone' => $request->phone,
+            'sex' => $request->sex,
+            'address' => $request->address,
+            'roles_id' => $request->roles_id = 3
+        ]);
+        $user->save();
+
+        return response()->json([
+            'message' => 'User successfully registered',
+            'data'=>[
+                'user'=>$user,
+            ]
+        ], 201);
+    }
+
+    public function search_product(Request $request){
+        $key = $request->keywords;
+        $product_search = $this->product->getProductSearch($key);
+        return response()->json([
+            'data' => [
+                'product_search' => $product_search
             ]
         ]);
     }

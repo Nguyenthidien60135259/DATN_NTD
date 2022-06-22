@@ -7,6 +7,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Session;
+use Barryvdh\DomPDF\PDF;
+use Illuminate\Support\Facades\DB;
 
 class OrderController extends Controller
 {
@@ -19,26 +21,13 @@ class OrderController extends Controller
             return Redirect::to('/admin')->send();
     }
         
-    function orderList()
+    public function orderList()
     {
         $this->AuthLogin();
-        $api_response = Http::get("http://127.0.0.1:8001/api/order_list");
-        $data = json_decode($api_response);
-        $order = $data->data->order;
-        $user = $data->data->user;
-        foreach($order as $type){
-            $type->user=[];
-            foreach($user as $user){
-                if($type->customer_id == $user->id){
-                    array_push($type->user,$user);
-                }
-            }
-        }
-        $context = [
-          "order"=>$order,
-          "user"=>$user
-        ];
-        return view("admin.order.list",$context);
+        $response = Http::get("http://127.0.0.1:8001/api/order_list");
+        $data = json_decode($response);
+        $all_order = $data->data->all_order;
+        return view("backend.order.list",compact('all_order'));
     }
 
 
@@ -46,45 +35,11 @@ class OrderController extends Controller
     {
         $this->AuthLogin();
         $id = $request->id;
-        $api_response = Http::get("http://127.0.0.1:8001/api/order_show/".$id);
-        $data = json_decode($api_response);
-        $order = $data->data->order;
-        $user = $data->data->user;
-        $order_detail = $data->data->order_detail;
-        $product = $data->data->product;
-        $size = $data->data->size;
-
-
-        // foreach($order_detail as $type){
-        //     $type->product=[];
-        //     foreach($product as $item){
-        //         if($type->product_id == $item->product->id){
-        //             array_push($type->product,$item);
-        //         }
-        //     }
-        // }
-
-
-        // foreach($product as $type){
-        //     $type->size=[];
-        //     foreach($size as $item){
-        //         if($type->product->size_id == $item->size->id){
-        //             array_push($type->size,$item);
-        //         }
-        //     }
-        // }
-
-
-        $context = [
-          "id"=>$id,
-          "order"=>$order,
-          "user"=>$user,
-          "order_detail"=>$order_detail,
-          "product"=>$product,
-          "size"=>$size,
-        ];
-
-        return view("admin.order.detail",$context);
+        $response = Http::get("http://127.0.0.1:8001/api/order_show/".$id);
+        $data = json_decode($response);
+        $order_detail = $data->data->order;
+        // dd($order_detail);
+        return view("backend.order.detail",compact('order_detail'));
     }
 
 
@@ -113,6 +68,32 @@ class OrderController extends Controller
 
         curl_close($curl);
         echo $response;
+    }
+
+
+
+
+    public function print_order_PDF(Request $request,$id)
+    {
+        $id = $request->id;
+        $api_response = Http::get("http://api.bitisnhatrang.cf/api/print_order/".$id);
+        $data = json_decode($api_response);
+        $order = $data->data->order;
+        $customer = $data->data->customer;
+        $order_detail = $data->data->order_detail;
+        $product = $data->data->product;
+
+        $context = [
+          "id"=>$id,
+          "order"=>$order,
+          "customer"=>$customer,
+          "order_detail"=>$order_detail,
+
+          "product"=>$product
+        ];
+
+        $pdf = PDF::loadView("admin.pdf",$context);
+        return $pdf->stream();
     }
 
     

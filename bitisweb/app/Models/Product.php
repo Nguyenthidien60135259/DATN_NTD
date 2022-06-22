@@ -43,6 +43,11 @@ class Product extends Model
         return $product_gai;
     }
 
+    public function getProductSearch($key){
+        $product_seach = Product::with("productImage")->where('name','like','%'.$key.'%')->get();
+        return $product_seach;
+    }
+
     public function getAll()
     {
         $result = DB::table('products')->get();
