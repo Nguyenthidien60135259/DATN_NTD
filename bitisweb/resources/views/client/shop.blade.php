@@ -154,100 +154,100 @@
 						</ul>
 					</div>
 					<div class="tab-content">
-					<div class="tab-pane fade active in" id="tshirt" >
-						@foreach($product_nam as $nam)
-						<div class="col-sm-4">
-							<div class="product-image-wrapper">
+						<div class="tab-pane fade active in" id="tshirt">
+							@foreach($product_nam as $nam)
+							<div class="col-sm-4">
+								<div class="product-image-wrapper">
 
-								<div class="single-products">
-									<div class="productinfo text-center">
-										@if(count($nam->product_image)>0)
-										<img src="/fronend/images/products/{{$nam->product_image[0]->image}}" alt="" />
-										@endif
-										<p>{{$nam->name}}</p>
-										<a href="/detail/{{$nam->id}}" class="btn btn-default add-to-cart"><i class="fa fa-eye"></i>Xem chi tiết</a>
-									</div>
-									<div class="product-overlay">
-										<div class="overlay-content">
+									<div class="single-products">
+										<div class="productinfo text-center">
+											@if(count($nam->product_image)>0)
+											<img src="/fronend/images/products/{{$nam->product_image[0]->image}}" alt="" />
+											@endif
+											<p>{{$nam->name}}</p>
 											<a href="/detail/{{$nam->id}}" class="btn btn-default add-to-cart"><i class="fa fa-eye"></i>Xem chi tiết</a>
 										</div>
-									</div>
-								</div>
-							</div>
-						</div>
-						@endforeach
-					</div>
-
-						<div class="tab-pane fade" id="blazers">
-						@foreach($product_nu as $nu)
-						<div class="col-sm-4">
-							<div class="product-image-wrapper">
-
-								<div class="single-products">
-									<div class="productinfo text-center">
-										@if(count($nu->product_image)>0)
-										<img src="/fronend/images/products/{{$nu->product_image[0]->image}}" alt="" />
-										@endif
-										<p>{{$nu->name}}</p>
-										<a href="/detail/{{$nu->id}}" class="btn btn-default add-to-cart"><i class="fa fa-eye"></i>Xem chi tiết</a>
-									</div>
-									<div class="product-overlay">
-										<div class="overlay-content">
-											<a href="/detail/{{$nu->id}}" class="btn btn-default add-to-cart"><i class="fa fa-eye"></i>Xem chi tiết</a>
+										<div class="product-overlay">
+											<div class="overlay-content">
+												<a href="/detail/{{$nam->id}}" class="btn btn-default add-to-cart"><i class="fa fa-eye"></i>Xem chi tiết</a>
+											</div>
 										</div>
 									</div>
 								</div>
 							</div>
+							@endforeach
 						</div>
-						@endforeach
+
+						<div class="tab-pane fade" id="blazers">
+							@foreach($product_nu as $nu)
+							<div class="col-sm-4">
+								<div class="product-image-wrapper">
+
+									<div class="single-products">
+										<div class="productinfo text-center">
+											@if(count($nu->product_image)>0)
+											<img src="/fronend/images/products/{{$nu->product_image[0]->image}}" alt="" />
+											@endif
+											<p>{{$nu->name}}</p>
+											<a href="/detail/{{$nu->id}}" class="btn btn-default add-to-cart"><i class="fa fa-eye"></i>Xem chi tiết</a>
+										</div>
+										<div class="product-overlay">
+											<div class="overlay-content">
+												<a href="/detail/{{$nu->id}}" class="btn btn-default add-to-cart"><i class="fa fa-eye"></i>Xem chi tiết</a>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+							@endforeach
 						</div>
 
 						<div class="tab-pane fade" id="sunglass">
-						@foreach($product_trai as $trai)
-						<div class="col-sm-4">
-							<div class="product-image-wrapper">
+							@foreach($product_trai as $trai)
+							<div class="col-sm-4">
+								<div class="product-image-wrapper">
 
-								<div class="single-products">
-									<div class="productinfo text-center">
-										@if(count($trai->product_image)>0)
-										<img src="/fronend/images/products/{{$trai->product_image[0]->image}}" alt="" />
-										@endif
-										<p>{{$trai->name}}</p>
-										<a href="/detail/{{$trai->id}}" class="btn btn-default add-to-cart"><i class="fa fa-eye"></i>Xem chi tiết</a>
-									</div>
-									<div class="product-overlay">
-										<div class="overlay-content">
+									<div class="single-products">
+										<div class="productinfo text-center">
+											@if(count($trai->product_image)>0)
+											<img src="/fronend/images/products/{{$trai->product_image[0]->image}}" alt="" />
+											@endif
+											<p>{{$trai->name}}</p>
 											<a href="/detail/{{$trai->id}}" class="btn btn-default add-to-cart"><i class="fa fa-eye"></i>Xem chi tiết</a>
+										</div>
+										<div class="product-overlay">
+											<div class="overlay-content">
+												<a href="/detail/{{$trai->id}}" class="btn btn-default add-to-cart"><i class="fa fa-eye"></i>Xem chi tiết</a>
+											</div>
 										</div>
 									</div>
 								</div>
 							</div>
-						</div>
-						@endforeach
+							@endforeach
 						</div>
 
 						<div class="tab-pane fade" id="kids">
-						@foreach($product_gai as $gai)
-						<div class="col-sm-4">
-							<div class="product-image-wrapper">
+							@foreach($product_gai as $gai)
+							<div class="col-sm-4">
+								<div class="product-image-wrapper">
 
-								<div class="single-products">
-									<div class="productinfo text-center">
-										@if(count($gai->product_image)>0)
-										<img src="/fronend/images/products/{{$gai->product_image[0]->image}}" alt="" />
-										@endif
-										<p>{{$gai->name}}</p>
-										<a href="/detail/{{$gai->id}}" class="btn btn-default add-to-cart"><i class="fa fa-eye"></i>Xem chi tiết</a>
-									</div>
-									<div class="product-overlay">
-										<div class="overlay-content">
+									<div class="single-products">
+										<div class="productinfo text-center">
+											@if(count($gai->product_image)>0)
+											<img src="/fronend/images/products/{{$gai->product_image[0]->image}}" alt="" />
+											@endif
+											<p>{{$gai->name}}</p>
 											<a href="/detail/{{$gai->id}}" class="btn btn-default add-to-cart"><i class="fa fa-eye"></i>Xem chi tiết</a>
+										</div>
+										<div class="product-overlay">
+											<div class="overlay-content">
+												<a href="/detail/{{$gai->id}}" class="btn btn-default add-to-cart"><i class="fa fa-eye"></i>Xem chi tiết</a>
+											</div>
 										</div>
 									</div>
 								</div>
 							</div>
-						</div>
-						@endforeach
+							@endforeach
 						</div>
 
 					</div>
@@ -351,8 +351,10 @@
 						</a>
 					</div>
 				</div>
-				<!--/recommended_items-->
 
+				<div class="fb-comments" data-href="http://127.0.0.1:8000/shop" data-mobile="http://127.0.0.1:8000/shop" data-width="" data-numposts="30"></div>
+
+				<!--/recommended_items-->
 			</div>
 		</div>
 	</div>

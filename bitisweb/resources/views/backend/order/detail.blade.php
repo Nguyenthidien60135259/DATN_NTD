@@ -17,7 +17,7 @@
 			?>
 			<table class="table table-striped b-t b-light">
 				<thead>
-					<tr align="center">
+					<tr style="text-align:center">
 						<th style="width:20px;">ID</th>
 						<th>Tên khách hàng</th>
 						<th>Số điện thoại</th>
@@ -52,7 +52,7 @@
 			?>
 			<table class="table table-striped b-t b-light">
 				<thead>
-					<tr align="center">
+					<tr style="text-align:center">
 						<th style="width:20px;">ID</th>
 						<th>Tên người nhận</th>
 						<th>Địa chỉ</th>
@@ -88,7 +88,7 @@
 			?>
 			<table class="table table-striped b-t b-light">
 				<thead>
-					<tr align="center">
+					<tr style="text-align:center">
 						<th style="width:20px;">ID</th>
 						<th>Tên sản phẩm</th>
 						<th>Size</th>

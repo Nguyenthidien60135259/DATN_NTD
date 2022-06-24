@@ -16,7 +16,7 @@
                         </div>
                         <div class="form-group">
                             <label>Mô tả sản phẩm</label>
-                            <textarea style="resize: none" rows="8" class="form-control" name="desc" placeholder="Mô tả sản phẩm"></textarea>
+                            <textarea style="resize: none" rows="8" class="form-control" id="ckeditor" name="desc" placeholder="Mô tả sản phẩm"></textarea>
                         </div>
                         <div class="form-group">
                             <label>Loại sản phẩm</label>

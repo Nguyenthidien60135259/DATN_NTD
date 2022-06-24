@@ -57,9 +57,10 @@
 <div class="footer-bottom">
 	<div class="container">
 		<div class="row">
-			<p class="pull-left">Copyright © 2022 Inc. All rights reserved.</p>
-			<!-- <p class="pull-right">Designed by <span><a target="_blank" href="http://www.themeum.com">Themeum</a></span></p> -->
+			<p class="pull-left col-sm-9">Biti's 205 Lê Hồng Phong, P.Phước Tân, TP.Nha Trang</p>
+			<div class="fb-like col-sm-2" data-href="http://127.0.0.1:8000/" data-width="" data-layout="button" data-action="like" data-size="small" data-share="true"></div>
 		</div>
+		
 	</div>
 </div>
 
