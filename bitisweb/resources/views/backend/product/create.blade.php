@@ -7,6 +7,14 @@
                 Thêm sản phẩm
             </header>
             <div class="panel-body">
+                <div class ="form-group col-md-12">
+                    @php
+                        $success = Session::get('success');
+                    @endphp
+                    @if($success)
+                        <div class="alert alert-success">{{$success}}</div>
+                    @endif
+                </div>
                 <div class="position-center">
                     <form id="product_create" enctype="multipart/form-data" method="POST">
                         @csrf
@@ -81,11 +89,11 @@
                         </div>
                         <div class="form-group">
                             <label>Thêm size</label>
-                            <div class="input-group control-group incre">
+                            <!-- <div class="input-group control-group incre">
                                 <div style="border:1px solid black; border-radius: 10px; margin-right: 35px;">
                                     <div class="form-group">
                                         <label>Size</label>
-                                        <select name="size[]" class="form-control">
+                                        <select name="size_id[]" id="size_id" class="form-control">
                                             @foreach($size as $s)
                                             <option value="{{$s->id}}">{{$s->size}}</option>
                                             @endforeach
@@ -109,7 +117,7 @@
                                     </div>
                                 </div>
                                 <div class="input-group-btn">
-                                    <button class="btn btn-primary" type="button"><i class="glyphicon glyphicon-plus"></i>Add</button>
+                                    <button class="btn btn-primary" type="button"><i class="glyphicon glyphicon-plus"></i><a href="javascript:void(0)" class="btn btn-success addRow">Add</a></button>
                                 </div>
                             </div>
                             <div class="size hide">
@@ -117,7 +125,7 @@
                                     <div style="border:1px solid black; border-radius: 10px;">
                                         <div class="form-group">
                                             <label>Size</label>
-                                            <select name="size[]" class="form-control">
+                                            <select name="size_id[]" id="" class="form-control">
                                                 @foreach($size as $s)
                                                 <option value="{{$s->id}}">{{$s->size}}</option>
                                                 @endforeach
@@ -125,29 +133,62 @@
                                         </div>
                                         <div class="form-group">
                                             <label>Giá đầu vào</label>
-                                            <input type="text" name="price[]" class="form-control">
+                                            <input type="text" name="price[]" id="" class="form-control">
                                         </div>
                                         <div class="form-group">
                                             <label>Giá bán</label>
-                                            <input type="text" name="sale[]" class="form-control">
+                                            <input type="text" name="sale[]" id="" class="form-control">
                                         </div>
                                         <div class="form-group">
                                             <label>Giảm giá</label>
-                                            <input type="text" name="discount[]" class="form-control">
+                                            <input type="text" name="discount[]" id="" class="form-control">
                                         </div>
                                         <div class="form-group">
                                             <label>Số lượng</label>
-                                            <input type="text" name="amount[]" class="form-control">
+                                            <input type="text" name="amount[]" id="" class="form-control">
                                         </div>
                                     </div>
                                     <div class="input-group-btn">
                                         <button class="btn btn-danger" type="button"><i class="glyphicon glyphicon-remove"></i> Remove</button>
                                     </div>
                                 </div>
+                            </div> -->
+                            <div class="row">
+                                <div class="form-group col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 child-repeater-table">
+                                    <table class="'table table-bordered table-responsive">
+                                        <thead>
+                                            <tr>
+                                                <th>Size</th>
+                                                <th>Giá đầu vào</th>
+                                                <th>Giá bán</th>
+                                                <th>Giảm giá</th>
+                                                <th>Số lượng</th>
+                                                <th><a href="javascript:void(0)" class="btn btn-primary addRow">+</a></th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td>
+                                                    <select name="size_id[]" id="size_id" class="form-control">
+                                                        @foreach($size as $s)
+                                                        <option value="{{$s->id}}">{{$s->size}}</option>
+                                                        @endforeach
+                                                    </select>
+                                                </td>
+                                                <td><input type="text" name="price[]" class="form-control"></td>
+                                                <td><input type="text" name="sale[]" class="form-control"></td>
+                                                <td><input type="text" name="discount[]" class="form-control"></td>
+                                                <td><input type="text" name="amount[]" class="form-control"></td>
+                                                <td><a href="javascript:void(0)" class="btn btn-danger deleteRow">-</a></td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
                             </div>
                         </div>
                         <button type="submit" class="btn btn-info">Thêm sản phẩm</button>
                     </form>
+
                 </div>
             </div>
         </section>
@@ -193,16 +234,35 @@
         $("body").on("click", ".btn-danger", function() {
             $(this).parents(".control-group").remove();
         });
-    });
 
-    $(document).ready(function() {
-        $(".btn-primary").click(function() {
-            var html = $(".size").html();
-            $(".incre").after(html);
-        });
-        $("body").on("click", ".btn-danger", function() {
-            $(this).parents(".control-group").remove();
-        });
+        //
+        // $(".btn-primary").click(function() {
+        //     var html = $(".size").html();
+        //     $(".incre").after(html);
+        // });
+        // $("body").on("click", ".btn-danger", function() {
+        //     $(this).parents(".control-group").remove();
+        // });
+        $('thead').on('click', '.addRow',function(){
+        var tr= "<tr>"+
+                    "<td>"+
+                        "<select name='size_id[]' id='size_id' class='form-control'>"+
+                       " @foreach($size as $s)"+
+                        "<option value='{{$s->id}}'>{{$s->size}}</option>"+
+                        "@endforeach"+
+                       " </select>"+
+                    "</td>"+
+                    "<td><input type='text' name='price[] class='form-control'></td>"+
+                    "<td><input type='text' name='sale[]' class='form-control'></td>"+
+                    "<td><input type='text' name='discount[]' class='form-control'></td>"+
+                    "<td><input type='text' name='amount[]' class='form-control'></td>"+
+                    "<td><a href='javascript:void(0)' class='btn btn-danger deleteRow'>-</a></td>"+
+                "</tr>"
+                $('tbody').append(tr);
+    });
+    $('tbody').on('click', '.deleteRow',function(){
+        $(this).parent().parent().remove();
+    });
     });
 </script>
 @endsection

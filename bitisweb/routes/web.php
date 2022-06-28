@@ -16,9 +16,9 @@ use App\Http\Controllers\API\backend\SexController;
 use App\Http\Controllers\API\backend\CommentController;
 use App\Http\Controllers\API\backend\OrderController;
 use App\Http\Controllers\API\backend\UserController;
+use App\Http\Controllers\API\backend\StatisticalController;
 //Admin
 use App\Http\Controllers\Auth\Backend\LoginController;
-
 
 /*
 |--------------------------------------------------------------------------
@@ -42,9 +42,10 @@ Route::group(['prefix' => 'api'], function () {
     Route::get('menu', [HomeController::class, 'menu']);
     Route::get('findProduct', [HomeController::class, 'findProduct']);
     Route::get('profile', [HomeController::class, 'manangerProfile']);
-    Route::get('add_cart',[HomeController::class, 'add_cart']);
-    Route::post('postsignUp', [HomeController::class,'register']);
-    Route::post('search',[HomeController::class, 'search_product']);
+    Route::get('add_cart', [HomeController::class, 'add_cart']);
+    Route::post('postsignUp', [HomeController::class, 'register']);
+    Route::post('search', [HomeController::class, 'search_product']);
+    Route::post('comment', [HomeController::class, 'postComment']);
 
 
     //
@@ -129,6 +130,16 @@ Route::group(['prefix' => 'api'], function () {
         Route::post('logout', [AdminController::class, 'logout']);
         Route::get('profile/{id}', [AdminController::class, 'profile']);
     });
+
+    //Statistical
+    Route::get("inventory_list", [StatisticalController::class, 'index']);
+    Route::post("filter_by_date", [StatisticalController::class, 'filter_by_date']);
+    Route::post("subs365days", [StatisticalController::class, 'subs365days']);
+    Route::post("thisMonth", [StatisticalController::class, 'thisMonth']);
+    Route::get("update_inventory/{id}", [StatisticalController::class, 'update_inventory']);
+    Route::get("user_all", [StatisticalController::class, 'user']);
+    Route::get("user_all/{id}", [StatisticalController::class, 'show']);
+    Route::get("user_id/{id}", [StatisticalController::class, 'show_id']);
 });
 
 
@@ -140,7 +151,7 @@ Route::group(['prefix' => 'admin'], function () {
     Route::post('/postLogin', "App\Http\Controllers\Backend\AdminController@postLogin")->name("postLogin");
     // Route::get('/login', 'App\Http\Controllers\Auth\Backend\LoginController@index')->name('admin.login');
     // Route::post('/login', 'App\Http\Controllers\Auth\Backend\LoginController@login')->name('admin.login.submit');
-    Route::get('/logout', "App\Http\Controllers\Auth\Backend\LoginController@logout")->name('logout');
+    Route::get('/logout', "App\Http\Controllers\Backend\AdminController@logout");
     // dashboard
     Route::get('/dashboard', 'App\Http\Controllers\Backend\AdminController@dashboard')->name('admin.dashboard');
 });
@@ -206,10 +217,20 @@ Route::get('/user_detail/{id}', "App\Http\Controllers\Backend\UserController@det
 Route::get('/user_delete/{id}', "App\Http\Controllers\Backend\UserController@deleteUser");
 
 //Order
-
 Route::get('/order_list', "App\Http\Controllers\Backend\OrderController@orderList");
-Route::get("/order_detail/{id}","App\Http\Controllers\Backend\OrderController@orderDetail");
+Route::get("/order_detail/{id}", "App\Http\Controllers\Backend\OrderController@orderDetail");
+Route::post("/upload_order/{id}", "App\Http\Controllers\Backend\OrderController@updateOrder")->name('upload_order');
 
+
+//Statistical
+Route::get("/inventory_list", "App\Http\Controllers\Backend\StatisticalController@chartInventory");
+Route::post("/filter_by_date", "App\Http\Controllers\Backend\StatisticalController@filter_by_date");
+Route::post("/subs365days", "App\Http\Controllers\Backend\StatisticalController@subs365days");
+Route::post("/thisMonth", "App\Http\Controllers\Backend\StatisticalController@thisMonth");
+
+//Login facebook
+Route::get('/login-facebook', 'App\Http\Controllers\Backend\AdminController@login_facebook');
+Route::get('/admin/callback', 'App\Http\Controllers\Backend\AdminController@callback_facebook');
 
 //CLIENT
 Route::get('/home', "App\Http\Controllers\Fronend\PageController@index");
@@ -222,21 +243,23 @@ Route::get('/blog', 'App\Http\Controllers\Fronend\Pagecontroller@blog');
 Route::get('/checkout', 'App\Http\Controllers\Fronend\Pagecontroller@checkout');
 Route::get('/about', 'App\Http\Controllers\Fronend\Pagecontroller@about');
 Route::get('/detail/{id}', 'App\Http\Controllers\Fronend\Pagecontroller@getDetail');
+Route::post('comment', "App\Http\Controllers\Fronend\Pagecontroller@comment");
 
-    //cart 
+//cart 
 Route::post('/save_cart', 'App\Http\Controllers\Fronend\CartController@save_cart');
 Route::get('/show_cart', 'App\Http\Controllers\Fronend\CartController@show_cart');
-Route::get('/delete_cart/{rowId}','App\Http\Controllers\Fronend\CartController@delete_cart');
+Route::get('/delete_cart/{rowId}', 'App\Http\Controllers\Fronend\CartController@delete_cart');
 Route::post('/update_qty', 'App\Http\Controllers\Fronend\CartController@update_qty');
+Route::get('/delete_all', 'App\Http\Controllers\Fronend\CartController@delete_all_cart');
 
- //Checkout
-Route::get('/login_checkout','App\Http\Controllers\Fronend\CheckoutConttroller@login_checkout');
-Route::post('/login_customer','App\Http\Controllers\Fronend\CheckoutConttroller@login_customer');
-Route::get('/logout_checkout','App\Http\Controllers\Fronend\CheckoutConttroller@logout_checkout');
+//Checkout
+Route::get('/login_checkout', 'App\Http\Controllers\Fronend\CheckoutConttroller@login_checkout');
+Route::post('/login_customer', 'App\Http\Controllers\Fronend\CheckoutConttroller@login_customer');
+Route::get('/logout_checkout', 'App\Http\Controllers\Fronend\CheckoutConttroller@logout_checkout');
 Route::post('/add_user', 'App\Http\Controllers\Fronend\CheckoutConttroller@add_user');
-Route::get('/checkout','App\Http\Controllers\Fronend\CheckoutConttroller@checkout');
+Route::get('/checkout', 'App\Http\Controllers\Fronend\CheckoutConttroller@checkout');
 Route::post('/save_checkout', 'App\Http\Controllers\Fronend\CheckoutConttroller@save_checkout');
-Route::get('/payment','App\Http\Controllers\Fronend\CheckoutConttroller@payment');
+Route::get('/payment', 'App\Http\Controllers\Fronend\CheckoutConttroller@payment');
 Route::post('/order_place', 'App\Http\Controllers\Fronend\CheckoutConttroller@order_place');
 
 Auth::routes();

@@ -30,4 +30,11 @@ class OrderDetail extends Model
         ->where('order_id',$id)->first();
         return $result;
     }
+    public function getProductOder($id){
+        $product_order = OrderDetail::with("product")->where('order_id',$id)->get();
+        // $product_order = DB::table('order_details')
+        // ->join()
+        return $product_order;
+    }
+    // public function getOrderDetailBy
 }

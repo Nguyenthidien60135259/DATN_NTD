@@ -110,7 +110,7 @@
 	</div>
 	<br>
 	
-	<form style="text-align: center;" id="update_order" method="POST" enctype="multipart/form-data">
+	<form style="text-align: center;" action="/upload_order/{{$order_detail->order_id}}"  id="update_order" method="post">
 		@csrf
 		<div class="panel-heading">
 		Cập nhật đơn hàng
@@ -118,19 +118,32 @@
 		<div class="table-responsive">
 		@if($order_detail->status == 0)
 		<select class="form-select" name="status">
-			<option>Chọn tình trạng đơn hàng</option>
+			<option value="0">Chọn tình trạng đơn hàng</option>
 			<option value="1" {{$order_detail->status == "1" ? "selected":""}}>Đã giao hàng</option>
 			<option value="2" {{$order_detail->status == "2" ? "selected":""}}>Hủy đơn hàng</option>
 		</select>
+		<!-- <input type="hidden" name ="order_id" value="{{ $order_detail->order_id}}" /> -->
+		<input type="hidden" name ="product_id" value="{{ $order_detail->product_id}}" />
+		<input type="hidden" name ="product_qty" value="{{ $order_detail->quantity}}" />
+		<input type="hidden" name ="product_size" value="{{ $order_detail->size_id}}" />
+		<button type="submit" class="btn btn-info">Update order</button>
 		@endif
-
+		
 		@if($order_detail->status == 1)
 		<select class="form-select" name="status">
-			<option>Chọn status</option>
+			<option value="1">Chọn tình trạng đơn hàng</option>
 			<option value="2" {{$order_detail->status == "2" ? "selected":""}}>Hủy đơn hàng</option>
 		</select>
-		@endif
+		<!-- <input type="hidden" name ="order_id" value="{{ $order_detail->order_id}}" /> -->
+		<input type="hidden" name ="product_id" value="{{ $order_detail->product_id}}" />
+		<input type="hidden" name ="product_qty" value="{{ $order_detail->quantity}}" />
+		<input type="hidden" name ="product_size" value="{{ $order_detail->size_id}}" />
 		<button type="submit" class="btn btn-info">Update order</button>
+		@endif
+		@if($order_detail->status == 2)
+			<option value="2">Đơn hàng đã hủy</option>
+			<button type="submit" disabled class="btn btn-info">Update order</button>
+		@endif
 		</div>
 	</form>
 </div>

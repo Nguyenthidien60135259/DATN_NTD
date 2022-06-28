@@ -18,6 +18,10 @@
     <link href="/fronend/css/animate.css" rel="stylesheet">
     <link href="/fronend/css/main.css" rel="stylesheet">
     <link href="/fronend/css/responsive.css" rel="stylesheet">
+    <link href="/fronend/css/lightslider.css" rel="stylesheet">
+    <link href="/fronend/css/lightgallery.min.css" rel="stylesheet">
+    <link href="/fronend/css/prettify.css" rel="stylesheet">
+    <link href="/fronend/css/sweetalert.css" rel="stylesheet">
     @yield("styles")
     <!--[if lt IE 9]>
     <script src="js/html5shiv.js"></script>
@@ -50,10 +54,15 @@
 <script src="/fronend/js/price-range.js"></script>
 <script src="/fronend/js/jquery.prettyPhoto.js"></script>
 <script src="/fronend/js/main.js"></script>
+<script src="/fronend/js/lightgallery-all.min.js"></script>
+<script src="/fronend/js/lightslider.js"></script>
+<script src="/fronend/js/prettify.js"></script>
+<script src="/fronend/js/sweetalert.js"></script>
 <div id="fb-root"></div>
 <script async defer crossorigin="anonymous" src="https://connect.facebook.net/vi_VN/sdk.js#xfbml=1&version=v14.0" nonce="h0fGZklB"></script>
 <div id="fb-root"></div>
 <script async defer crossorigin="anonymous" src="https://connect.facebook.net/vi_VN/sdk.js#xfbml=1&version=v14.0" nonce="I3KqXnI4"></script>
 <div id="fb-root"></div>
 <script async defer crossorigin="anonymous" src="https://connect.facebook.net/vi_VN/sdk.js#xfbml=1&version=v14.0" nonce="gHUZ4XOs"></script>
+
 </html>

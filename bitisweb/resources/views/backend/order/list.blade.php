@@ -42,8 +42,8 @@
 					<td>
 						<a href="/order_detail/{{$ord->id}}" class="active styling-edit" title="Chi tiết">
 						<i class="fa fa-pencil-square-o text-success text-active"></i></a>
-						<a onclick="return confirm('Bạn có chắc là muốn xóa đơn hàng không?')" href="" class="active styling-edit" ui-toggle-class="">
-						<i class="fa fa-times text-danger text"></i></a>
+						<!-- <a onclick="return confirm('Bạn có chắc là muốn xóa đơn hàng không?')" href="" class="active styling-edit" ui-toggle-class="">
+						<i class="fa fa-times text-danger text"></i></a> -->
 					</td>
 				</tr>
 				@endforeach

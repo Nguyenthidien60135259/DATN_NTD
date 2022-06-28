@@ -27,5 +27,9 @@ class Order extends Model
         ->orderBy('orders.id','desc')->get();
         return $all_order;
     }
+
+    public function updateOrder($id,$data){
+        DB::table('orders')->where('id','=',$id)->update($data);
+    }
     
 }

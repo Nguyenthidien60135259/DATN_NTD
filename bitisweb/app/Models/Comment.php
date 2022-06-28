@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\DB;
 class Comment extends Model
 {
     use HasFactory;
+    protected $table = 'comments';
     public function getCommenyByProductId($product_id){
         $result = DB::table('comments')->where('product_id','=',$product_id)->get();
         return $result;
@@ -26,5 +27,9 @@ class Comment extends Model
 
     public function deleteComment($id){
         DB::table('comments')->where('id',$id)->delete();
+    }
+
+    public function addComment($data){
+        DB::table('comments')->insert($data);
     }
 }

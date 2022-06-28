@@ -8,6 +8,9 @@
                 <li class="active">Thanh toán giỏ hàng</li>
             </ol>
         </div>
+        <div style="text-align:right;">
+            <a class="btn btn-default update" href="{{url('/delete_all')}}">Xóa tất cả</a>
+        </div>
         <div class="table-responsive cart_info">
 
             <?php
@@ -16,7 +19,6 @@
             // print_r($content);
             // echo '<pre>';
             ?>
-
             <table class="table table-condensed">
                 <thead>
                     <tr class="cart_menu">
@@ -92,24 +94,25 @@
                 <div class="total_area">
                     <ul>
                         <li>Tổng <span>{{Cart::priceTotal(0,',','.').' vnđ'}}</span></li>
-                        <li>Thuế <span>{{Cart::tax(0,',','.').' vnđ'}}</span></li>
+                        <!-- <li>Thuế <span>{{Cart::tax(0,',','.').' vnđ'}}</span></li> -->
                         <li>Phí vận chuyển <span>Free</span></li>
                         <li>Thành tiền <span>{{Cart::total(0,',','.').' vnđ'}}</span></li>
                     </ul>
                     <!-- <a class="btn btn-default update" href="{{url('/login_checkout')}}">Thanh toán</a> -->
                     <?php
-							$customer_id = Session::get('customer_id');
-							if ($customer_id != null){
-							?>
-                            <a class="btn btn-default update" href="{{url('/checkout')}}">Thanh toán</a>
-							<!-- <li><a href="/checkout" class="active"><i class="fa fa-crosshairs"></i> Thanh toán</a></li> -->
-							<?php 
-							} else {
-							?>
-                            <a class="btn btn-default update" href="{{url('/login_checkout')}}">Thanh toán</a>
-							<?php
-							}
-							?>
+                    $customer_id = Session::get('customer_id');
+                    if ($customer_id != null) {
+                    ?>
+                        <a class="btn btn-default update" href="{{url('/checkout')}}">Thanh toán</a>
+                        <!-- <a class="btn btn-default update" href="{{url('/checkout')}}">Mã giảm giá</a> -->
+                        <!-- <li><a href="/checkout" class="active"><i class="fa fa-crosshairs"></i> Thanh toán</a></li> -->
+                    <?php
+                    } else {
+                    ?>
+                        <a class="btn btn-default update" href="{{url('/login_checkout')}}">Thanh toán</a>
+                    <?php
+                    }
+                    ?>
                 </div>
             </div>
         </div>

@@ -9,6 +9,8 @@ use App\Models\OrderDetail;
 use App\Models\User;
 use App\Models\Statistical;
 use App\Models\Product;
+use App\Models\ProductSize;
+use Illuminate\Support\Carbon;
 
 class OrderController extends Controller
 {
@@ -16,24 +18,25 @@ class OrderController extends Controller
         Product $product,
         User $user,
         Order $order,
+        ProductSize $pro_size,
         OrderDetail $order_detail,
-        Statistical $statis 
-        
-    )
-    {
+        Statistical $statis
+
+    ) {
         $this->product = $product;
-       $this->user =$user;
-       $this->order = $order;
-       $this->order_detail = $order_detail;
-       $this->statis = $statis;
+        $this->user = $user;
+        $this->order = $order;
+        $this->pro_size = $pro_size;
+        $this->order_detail = $order_detail;
+        $this->statis = $statis;
     }
 
     public function index()
     {
         $all_order = $this->order->getAllOrder();
         return response()->json([
-            "data"=>[
-                "all_order"=>$all_order
+            "data" => [
+                "all_order" => $all_order
             ]
         ]);
     }
@@ -42,9 +45,9 @@ class OrderController extends Controller
     {
         $order_detail = $this->order->getOrderById($id);
         return response()->json([
-           "data"=>[
-               "order"=>$order_detail
-           ]
+            "data" => [
+                "order" => $order_detail
+            ]
         ]);
     }
 
@@ -52,104 +55,103 @@ class OrderController extends Controller
     {
         $order = $this->order->getOrderById($id);
         $order_detail = $this->order_detail->getOrderDetailById($order->id);
-        $product = OrderDetail::with("product")->where("order_id",$id)->get();
-        $user = User::all()->where('id',$order->user_id);
+        $product = OrderDetail::with("product")->where("order_id", $id)->get();
+        $user = User::all()->where('id', $order->user_id);
         return response()->json([
-           "data"=>[
-               "order"=>[$order],
-               "order_detail"=>$order_detail,
-               "user"=>$user,
-               "product"=>$product,
-           ]
+            "data" => [
+                "order" => [$order],
+                "order_detail" => $order_detail,
+                "user" => $user,
+                "product" => $product,
+            ]
         ]);
     }
 
     public function update(Request $request, $id)
     {
-        $order = Order::find($id);
-        $order->status = $request->input('status');
-        $order_date = $order->order_date;
-        $statistic = Statistical::where("order_date",$order_date)->get();
-        $order_detail = OrderDetail::where("order_id",$id)->get();
-        $product = OrderDetail::with("product")->where("order_id",$id)->get();
-        $size = OrderDetail::with("size")->where("order_id",$id)->get();
+        $data_order = [
+            'status' => $request->status,
+            'updated_at' => Carbon::now()
+        ];
+        $this->order->updateOrder($id, $data_order);
 
-        foreach($order_detail as $or)
-        {
-            $listTopping = explode(",",$or->listTopping);
+        $productSize = ProductSize::where("size_id", $request->product_size)->where('product_id', $request->product_id)->first();
+        $order = $this->order->getOrderById($id);
+
+        if ($request->status == 1) {
+            $data_ps = [
+                'amount' => $productSize->amount - $request->product_qty,
+                'updated_at' => Carbon::now()
+            ];
+            $this->pro_size->updateProductSize($productSize->size_id, $productSize->product_id, $data_ps);
         }
-        $count = count($listTopping);
 
+        if ($request->status == 2) {
+            $data_ps = [
+                'amount' => $productSize->amount + $request->product_qty,
+                'updated_at' => Carbon::now()
+            ];
+            $this->pro_size->updateProductSize($productSize->size_id, $productSize->product_id, $data_ps);
+        }
+        $order_detail = $this->order_detail->getOrderDetailById($id);
+        // $product = $this->order_detail->getProductOder($id);
 
-        if($statistic)
-        {
+        $product = $this->pro_size->getProductSize($request->product_id, $request->product_size);
+        // dd($product);
+        $statistic = Statistical::where("order_date", $order->created_at)->get();
+        if ($statistic) {
             $statistic_count = $statistic->count();
-        }
-        else{
+        } else {
             $statistic_count = 0;
         }
 
-        if($order->status == 1)
-        {
+        if ($order->status == 1) {
             $order_total = 0;
-			$sales = 0;
-			$profit = 0;
-			$quantity = 0;
-            foreach($order_detail as $or)
-            {
-                if($count > 1)
-                {
-                    foreach($product as $pro)
-                    {
-                            if($or->product_id == $pro->product_id)
-                            {
-                                $order_total+=1;
-                                $quantity += $or->quantity;
-                                $profit += ($pro->product->price - $pro->product->price_cost) * $or->quantity;
-                                $sales += ($or->quantity * $pro->product->price) + $count * 5000;
-                            }
-                    }
+            $sales = 0;
+            $profit = 0;
+            $quantity = 0;
+            // $count = count($product);
+            if ($statistic_count > 0) {
+                foreach ($product as $pro) {
+                    $order_total += 1;
+                    $quantity += $order_detail->quantity;
+                    $profit += ($pro->sale - $pro->price) * $order_detail->quantity;
+                    $sales += ($order_detail->quantity * $pro->sale);
                 }
-                else
-                {
-                    foreach($product as $pro)
-                    {
-                        if($or->product_id == $pro->product_id)
-                        {
-                            $order_total+=1;
-                            $quantity += $or->quantity;
-                            $profit += ($pro->product->price - $pro->product->price_cost) * $or->quantity;
-                            $sales += ($or->quantity * $pro->product->price);
-                        }
-                    }
+                $statistic_update = Statistical::where('order_date', $order->created_at)->first();
+                $data_statis = [
+                    'order_date' => $productSize->amount - $request->qty,
+                    'sale' => $statistic_update->sale + $sales,
+                    'profit' => $statistic_update->profit + $profit,
+                    'quantity' => $statistic_update->quantity + $quantity,
+                    'order_total' => $statistic_update->order_total + $order_total,
+                    'updated_at' => Carbon::now()
+                ];
+
+                $this->statis->updateStatistical($statistic_update->id, $data_statis);
+            } else {
+                foreach ($product as $pro) {
+                $order_total += 1;
+                $quantity += $order_detail->quantity;
+                $profit += ($pro->sale - $pro->price) * $order_detail->quantity;
+                $sales += ($order_detail->quantity * $pro->sale);
                 }
+                
+                $data_statis = [
+                    'order_date' => Carbon::parse($order->created_at)->format('Y-m-d'),
+                    'sale' => $sales,
+                    'profit' => $profit,
+                    'quantity' => $quantity,
+                    'order_total' => $order_total,
+                    'created_at' => Carbon::now(),
+                    'updated_at' => Carbon::now()
+                ];
+                $this->statis->addStatistical($data_statis);
             }
-
-            if($statistic_count>0){
-				$statistic_update = Statistical::where('order_date',$order_date)->first();
-				$statistic_update->sales = $statistic_update->sales + $sales;
-				$statistic_update->profit =  $statistic_update->profit + $profit;
-				$statistic_update->quantity =  $statistic_update->quantity + $quantity;
-				$statistic_update->order_total = $statistic_update->order_total + $order_total;
-				$statistic_update->save();
-			}
-			else{
-
-				$statistic_new = new Statistical();
-				$statistic_new->order_date = $order_date;
-				$statistic_new->sales = $sales;
-				$statistic_new->profit =  $profit;
-				$statistic_new->quantity =  $quantity;
-				$statistic_new->order_total = $order_total;
-				$statistic_new->save();
-			}
         }
-        $order->update();
         return response()->json([
-           "message" => "Update Successfully!!",
-           "data" => [
-               "statistic"=>$statistic
-           ]
+            "message" => "Update Successfully!!",
+
         ]);
     }
 }

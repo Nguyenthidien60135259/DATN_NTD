@@ -15,8 +15,11 @@ use App\Models\ProductTail;
 use App\Models\Color;
 use Carbon\Carbon;
 use App\Models\Image;
+use App\Models\ProductSize;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\Validator;
 
 class ProductController extends Controller
 {
@@ -26,9 +29,11 @@ class ProductController extends Controller
         Size $size,
         Supplier $supplier,
         Image $image,
+        ProductSize $pro_size,
         Sex $sex,
         ProductTail $product_tail,
         Color $color
+
     ) {
         $this->product = $product;
         $this->category = $category;
@@ -38,6 +43,7 @@ class ProductController extends Controller
         $this->product_tail = $product_tail;
         $this->color = $color;
         $this->image = $image;
+        $this->pro_size = $pro_size;
     }
     public function AuthLogin()
     {
@@ -104,22 +110,57 @@ class ProductController extends Controller
     public function saveCreateProduct(Request $request)
     {
         $this->AuthLogin();
-        $this->validate($request, [
+        $validator = Validator::make($request->all(), [
             'filename' => 'required',
             'filename.*' => 'image|mimes:jpeg,png,jpg,gif,svg|max:2048',
-            'name' => 'required|string|max:50',
+            'name' => 'required|string',
             'color_id' => 'required',
             'sex_id' => 'required',
             'stt' => 'required',
             'supplier_id' => 'required',
             'category_id' => 'required',
             'product_tail_id' => 'required',
-            'size' => 'required',
+            'size_id' => 'required',
             'price' => 'required',
             'sale' => 'required',
             'discount' => 'required',
             'amount' => 'required'
         ]);
+
+        // check validator ?
+        if ($validator->fails()) {
+            return response()->json(['message' => $validator->errors()], 422);
+        }
+
+        $sup = $this->supplier->getSupplierById($request->supplier_id);
+        $sup_code = $sup->code;
+        $color = $this->color->getColorById($request->color_id);
+        $cl_id = $color->code;
+        $cate = $this->category->getCategoryById($request->category_id);
+        $cate_id = $cate->code;
+        $s = $this->sex->getSexById($request->sex_id);
+        $sex_id = $s->code;
+        $pt = $this->product_tail->getProTailById($request->product_tail_id);
+        $product_tail_code = $pt->code;
+        $code = $sup_code . $cate_id . $sex_id . $request->stt . $product_tail_code . $cl_id;
+        $product = Product::create([
+            'code' => $code,
+            'name' => $request->name,
+            'desc' => $request->desc,
+            'color_id' => $request->color_id,
+            'sex_id' => $request->sex_id,
+            'supplier_id' => $request->supplier_id,
+            'category_id' => $request->category_id,
+            'product_tail_id' => $request->product_tail_id,
+            'created_at' => Carbon::now(),
+            'updated_at' => Carbon::now()
+        ]);
+        $product->save();
+
+        $product_id = $product->id;
+
+
+
         if ($request->hasfile('filename')) {
             foreach ($request->file('filename') as $image) {
                 $name = $image->getClientOriginalName();
@@ -127,29 +168,57 @@ class ProductController extends Controller
                 $list_image[] = $name;
             }
         }
-        if ($request->hasfile('size')) {
-            foreach ($request->size as $size) {
-                $name = $size->getClientOriginalName();
-                $list_size[] = $name;
-            } 
+        // $list_image = $request->list_image;
+
+        for ($i = 0; $i < count($list_image); $i++) {
+            $data_image = [
+                'product_id' => $product_id,
+                'image' => $list_image[$i],
+                'created_at' => Carbon::now(),
+                'updated_at' => Carbon::now()
+            ];
+            $this->image->addImage($data_image);
         }
-        // dd($list_size);
-        // dd(count($list_image));
-        $response = Http::post("http://127.0.0.1:8001/api/product_create", [
-            'name' => $request->name,
-            'desc' => $request->desc,
-            'category_id' => $request->category_id,
-            'supplier_id' => $request->supplier_id,
-            'sex_id' => $request->sex_id,
-            'product_tail_id' => $request->product_tail_id,
-            'stt' => $request->stt,
-            'color_id' => $request->color_id,
-            'list_image' => $list_image
-        ]);
-        $data = json_decode($response);
+
+
+        $price = $request->price;
+        $sale = $request->sale;
+        $discount = $request->discount;
+        $amount = $request->amount;
+        $size_id = $request->size_id;
+
+        for ($i = 0; $i < count($price); $i++) {
+            $datasave = [
+                'size_id' => $size_id[$i],
+                'product_id' => $product_id,
+                'price' => $price[$i],
+                'sale' => $sale[$i],
+                'discount' => $discount[$i],
+                'amount' => $amount[$i],
+                'created_at' => Carbon::now(),
+                'updated_at' => Carbon::now()
+            ];
+            $this->pro_size->addProductSize($datasave);
+
+        }
+        Session::put('success', 'thành công');
+        return back();
+        // $response = Http::post("http://127.0.0.1:8001/api/product_create", [
+        //     'name' => $request->name,
+        //     'desc' => $request->desc,
+        //     'category_id' => $request->category_id,
+        //     'supplier_id' => $request->supplier_id,
+        //     'sex_id' => $request->sex_id,
+        //     'product_tail_id' => $request->product_tail_id,
+        //     'stt' => $request->stt,
+        //     'color_id' => $request->color_id,
+        //     'list_image' => $list_image
+        // ]);
+        // $data = json_decode($response);
+        // dd($data);
         // $list_image1 = $data->data->list_image;
         // dd($data);
-        return redirect("/product_list");
+        // return redirect("/product_list");
     }
 
     public function updateProduct(Request $request)
@@ -199,11 +268,12 @@ class ProductController extends Controller
                 $list_image[] = $name;
             }
         }
+        // dd($request->hasfile('size_id'));
         if ($request->hasfile('size')) {
             foreach ($request->size as $size) {
                 $name = $size->getClientOriginalName();
                 $list_size[] = $name;
-            } 
+            }
         }
         // dd($id);
         $response = Http::post("http://127.0.0.1:8001/api/product_update/" . $id, [

@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\DB;
 class Size extends Model
 {
     use HasFactory;
+    protected $table = 'sizes';
     public function getSizeByName($key){
         $result = DB::table('sizes')->where('name', '=', $key)->get();
         return $result;

@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\DB;
 class ProductTail extends Model
 {
     use HasFactory;
+    protected $table = 'product_tails';
     public function getAll(){
         $result = DB::table('product_tails')->get();
         return $result;

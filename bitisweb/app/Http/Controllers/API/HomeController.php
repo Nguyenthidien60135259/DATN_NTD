@@ -13,6 +13,7 @@ use App\Models\Image;
 use App\Models\Category;
 use App\Models\Sex;
 use App\Models\ProductSize;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Validator;
 
 class HomeController extends Controller
@@ -56,11 +57,13 @@ class HomeController extends Controller
     public function detail(Request $request)
     {
         $product = $this->product->getProductById($request->id);
+        $comment = $this->comment->getCommenyByProductId($request->id);
         $size = $this->size->getAll();
         return response()->json([
             'data' => [
                 'sizes' =>$size,
-                'product' => $product
+                'product' => $product,
+                'comment' => $comment 
             ]
         ]);
     }
@@ -124,7 +127,7 @@ class HomeController extends Controller
                 'product_nam'=>$product_nam,
                 'product_nu'=>$product_nu,
                 'product_trai'=>$product_trai,
-                'product_gai'=>$product_gai,
+                'product_gai'=>$product_gai
             ]
         ]);
     }
@@ -192,6 +195,33 @@ class HomeController extends Controller
             'data' => [
                 'product_search' => $product_search
             ]
+        ]);
+    }
+
+    public function postComment(Request $request)
+    {
+        $validator = Validator::make($request->all(),[
+            'customer_id' => 'required',
+            'product_id' => 'required',
+            'comment' => 'required'
+         ]);
+         if($validator->fails())
+         {
+             return response()->json(['message'=>$validator->errors()],422);
+         }
+         
+        // $cus_id = $request->customer_id;
+        // dd($request->customer_id,$request->product_id,$request->comment);
+        $data = [
+            "customer_id" =>$request->customer_id,
+            "product_id" => $request->product_id,
+            "comment" => $request->comment,
+            'created_at' => Carbon::now(),
+            'updated_at' => Carbon::now(),
+        ];
+        $this->comment->addComment($data);
+        return response()->json([
+            "message" => "Viết bình luận thành công",
         ]);
     }
 }

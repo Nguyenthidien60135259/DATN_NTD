@@ -62,6 +62,7 @@ class PageController extends Controller
         // dd($data);
         $product = $data->data->product;
         $sizes = $data->data->sizes;
+        $comment = $data->data->comment;
         // dd($product->product_size[0]->size_id);
         // for($i=0;$i<count($product->product_size);$i++){
         //     foreach($sizes as $size){
@@ -73,7 +74,7 @@ class PageController extends Controller
         // }
 // dd($product);
        
-        return view('client.detail',compact('product','sizes'));
+        return view('client.detail',compact('product','sizes','comment'));
     }
 
     public function tail(){
@@ -137,5 +138,18 @@ class PageController extends Controller
         $data = json_decode($response);
         $search_product = $data->data->product_search;
         return view('client.search',compact('search_product'));
+    }
+
+    public function comment(Request $request){
+        $response = Http::post("http://127.0.0.1:8001/api/comment/",[
+            'customer_id'=>$request->customer_id,
+            'product_id'=>$request->product_id,
+            'comment'=>$request->comment
+        ]);
+        $data = json_decode($response);
+        // dd($data);
+        // $search_product = $data->data->product_search;
+        // dd($request->customer_id,$request->product_id,$request->comment);
+        return back();
     }
 }

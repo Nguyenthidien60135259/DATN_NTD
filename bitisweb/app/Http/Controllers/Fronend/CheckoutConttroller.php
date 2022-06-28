@@ -46,7 +46,6 @@ class CheckoutConttroller extends Controller
       $data['address'] = $request->address;
       $data['role_id'] = 3;
       $customer_id = DB::table('customers')->insertGetId($data);
-      //   dd($id);
       Session::put('customer_id', $customer_id);
       Session::put('customer_name', $request->name);
       return redirect('/checkout');
@@ -74,22 +73,23 @@ class CheckoutConttroller extends Controller
    {
       return view('client.payment');
    }
-   public function logout_checkout(){
+   public function logout_checkout()
+   {
       Session::flush();
       return Redirect('/login_checkout');
    }
 
-   public function login_customer(Request $request){
+   public function login_customer(Request $request)
+   {
       $email = $request->email;
       $password = md5($request->password);
 
-      $result = DB::table('customers')->where('email',$email)->where('password',$password)->first();
-      
-      if($result){
+      $result = DB::table('customers')->where('email', $email)->where('password', $password)->first();
+
+      if ($result) {
          Session::put('customer_id', $result->id);
          return Redirect('/checkout');
-      }
-      else{
+      } else {
          return Redirect('/login_checkout');
       }
    }
@@ -99,42 +99,49 @@ class CheckoutConttroller extends Controller
       //payment
       $data = array();
       $data['payment_method'] = $request->payment_option;
-      $data['payment_status'] = 'Chờ xử lí';
+      $data['payment_status'] = '0';
+      $data['created_at'] = Carbon::now();
+      $data['updated_at'] = Carbon::now();
       $payment_id = DB::table('payments')->insertGetId($data);
 
       //order
       $order_data = array();
       $order_data['customer_id'] = Session::get('customer_id');
       $order_data['shipping_id'] = Session::get('shipping_id');
-      $order_data['total'] = Cart::total();
+      $order_data['total'] = Cart::total(0,',','');
       $order_data['payment_id'] = $payment_id;
-      $order_data['status'] = 'Chờ xử lí';
+      $order_data['status'] = '0';
+      $order_data['created_at'] = Carbon::now();
+      $order_data['updated_at'] = Carbon::now();
       $order_id = DB::table('orders')->insertGetId($order_data);
 
       $content  = Cart::content();
       //order_detail
-      foreach($content as $v_content){
+      foreach ($content as $v_content) {
+         $size = DB::table('sizes')->where('size', $v_content->options->size)->first();
+         $product = DB::table('products')->where('id', $v_content->id)->first();
+
+         $pro_color = substr($product->code,-3);
+         $color = DB::table('colors')->where('code', $pro_color)->first();
          $order_detail_data = array();
          $order_detail_data['order_id'] = $order_id;
          $order_detail_data['product_id'] = $v_content->id;
          $order_detail_data['product_name'] = $v_content->name;
          $order_detail_data['product_price'] = $v_content->price;
          $order_detail_data['quantity'] = $v_content->qty;
-         $order_detail_data['size_id'] = $order_id;
-         $order_detail_data['color_id'] = $order_id;
+         $order_detail_data['size_id'] = $size->id;
+         $order_detail_data['color_id'] = $color->id;
+         $order_detail_data['created_at'] = Carbon::now();
+         $order_detail_data['updated_at'] = Carbon::now();
          DB::table('order_details')->insert($order_detail_data);
       }
-
-      if($data['payment_method'] == 1){
+      if ($data['payment_method'] == 1) {
          echo ' Thanh toán bằng ATM';
-      }
-      elseif($data['payment_method'] == 2){
+      } elseif ($data['payment_method'] == 2) {
          Cart::destroy();
          return view('client.handcash');
-      }
-      else{
+      } else {
          echo ' Thanh toán bằng PayPal';
       }
-
    }
 }

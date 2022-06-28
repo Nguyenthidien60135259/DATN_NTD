@@ -11,9 +11,9 @@ class Image extends Model
     use HasFactory;
     protected $primaryKey = 'id';
  	protected $table = 'images';
-     protected $fillable = [
-        'product_id','image'
-    ];
+    //  protected $fillable = [
+    //     'product_id','image'
+    // ];
 
     public function getImageByProductId($key){
         $result = DB::table('images')

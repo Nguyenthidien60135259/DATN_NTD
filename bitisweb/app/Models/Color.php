@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\DB;
 class Color extends Model
 {
     use HasFactory;
+    protected $table = 'colors';
     public function getProductByColorId($key)
     {
         $result = DB::table('colors')->where('image','Like',"%$key%")->select('id')->get();

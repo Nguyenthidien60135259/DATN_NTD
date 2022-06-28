@@ -10,11 +10,55 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Redirect;
 use App\Models\Admin;
+use Laravel\Socialite\Facades\Socialite;
+use App\Models\Social;
+
 
 session_start();
 
 class AdminController extends Controller
 {
+    public function login_facebook(){
+        return Socialite::driver('facebook')->redirect();
+    }
+
+    public function callback_facebook(){
+        $provider = Socialite::driver('facebook')->user();
+        $account = Social::where('provider','facebook')->where('provider_user_id',$provider->getId())->first();
+        if($account){
+            //login in vao trang quan tri  
+            $account_name = Admin::where('admin_id',$account->user)->first();
+            Session::put('admin_login',$account_name->admin_name);
+ Session::put('admin_id',$account_name->admin_id);
+            return redirect('/admin/dashboard')->with('message', 'Đăng nhập Admin thành công');
+        }else{
+
+            $hieu = new Social([
+                'provider_user_id' => $provider->getId(),
+                'provider' => 'facebook'
+            ]);
+
+            $orang = Admin::where('admin_email',$provider->getEmail())->first();
+
+            if(!$orang){
+                $orang = Admin::create([
+                    'name' => $provider->getName(),
+                    'email' => $provider->getEmail(),
+                    'password' => '',
+                    'role_id' => 2
+
+                ]);
+            }
+            $hieu->login()->associate($orang);
+            $hieu->save();
+
+            $account_name = Admin::where('id',$account->user)->first();
+
+            Session::put('name',$account_name->name);
+            return redirect('/admin/dashboard')->with('message', 'Đăng nhập Admin thành công');
+        } 
+    }
+
     public function __construct(
         Admin $admin
     ) {
@@ -64,11 +108,11 @@ class AdminController extends Controller
         }
     }
 
-    function logout(Request $request)
+    public function logout(Request $request)
     {
         // $request->session()->flush();
         Session::put('name', null);
         Session::put('id', null);
-        return redirect("/login");
+        return redirect("admin");
     }
 }

@@ -41,5 +41,16 @@ class ProductSize extends Model
         ->orderBy('sale', 'asc')->get();
         return $result;
     }
+    public function updateProductSize($id,$pro_id,$data){
+        DB::table('product_sizes')->where('size_id','=',$id)->where('product_id',$pro_id)->update($data);
+    }
 
+    public function getProductSize($pro,$size){
+        $result = DB::table('product_sizes')->where('size_id','=',$size)->where('product_id',$pro)->get();
+        return $result;
+    }
+    public function addProductSize($data)
+    {
+        DB::table('product_sizes')->insert($data);
+    }
 }
