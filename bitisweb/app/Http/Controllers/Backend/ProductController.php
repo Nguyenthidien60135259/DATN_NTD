@@ -116,20 +116,20 @@ class ProductController extends Controller
             'name' => 'required|string',
             'color_id' => 'required',
             'sex_id' => 'required',
-            'stt' => 'required',
+            'stt' => 'required|integer|max:4',
             'supplier_id' => 'required',
             'category_id' => 'required',
             'product_tail_id' => 'required',
             'size_id' => 'required',
-            'price' => 'required',
-            'sale' => 'required',
-            'discount' => 'required',
-            'amount' => 'required'
+            'price' => 'required|integer',
+            'sale' => 'required|integer',
+            'discount' => 'required|integer',
+            'amount' => 'required|integer'
         ]);
 
         // check validator ?
         if ($validator->fails()) {
-            return response()->json(['message' => $validator->errors()], 422);
+            return back()->with('message', $validator->errors());;
         }
 
         $sup = $this->supplier->getSupplierById($request->supplier_id);
@@ -201,24 +201,7 @@ class ProductController extends Controller
             $this->pro_size->addProductSize($datasave);
 
         }
-        Session::put('success', 'thành công');
-        return back();
-        // $response = Http::post("http://127.0.0.1:8001/api/product_create", [
-        //     'name' => $request->name,
-        //     'desc' => $request->desc,
-        //     'category_id' => $request->category_id,
-        //     'supplier_id' => $request->supplier_id,
-        //     'sex_id' => $request->sex_id,
-        //     'product_tail_id' => $request->product_tail_id,
-        //     'stt' => $request->stt,
-        //     'color_id' => $request->color_id,
-        //     'list_image' => $list_image
-        // ]);
-        // $data = json_decode($response);
-        // dd($data);
-        // $list_image1 = $data->data->list_image;
-        // dd($data);
-        // return redirect("/product_list");
+        return back()->with('message', 'Thêm mới sản phẩm thành công');
     }
 
     public function updateProduct(Request $request)
@@ -227,17 +210,17 @@ class ProductController extends Controller
         $id = $request->id;
         $response = Http::get("http://127.0.0.1:8001/api/product_show/" . $id);
         $data = json_decode($response);
+        // dd($data);
         $product = $data->data->product;
         $category = $data->data->category;
-        $size = $data->data->size;
+        // $size = $data->data->size;
         $supplier = $data->data->supplier;
         $sex = $data->data->sex;
         $product_tail = $data->data->product_tail;
         $color = $data->data->color;
         $stt = substr($product->code, 3, 4);
-        $images = $data->data->images;
         // dd($images);
-        return view("backend.product.update", compact('product', 'images', 'category', 'supplier', 'product_tail', 'sex', 'color', 'stt'));
+        return view("backend.product.update", compact('product','category', 'supplier', 'product_tail', 'sex', 'color', 'stt'));
     }
 
     public function saveUpdateProduct(Request $request)
@@ -245,9 +228,7 @@ class ProductController extends Controller
         $this->AuthLogin();
         // $code = substr($request->supplier_id,-1,1).substr($request->category_id,-1,1).substr($request->sex_id,-1).$request->stt.substr($request->product_tail_id,-2).substr($request->color_id,-3);
         $id = $request->id;
-        $this->validate($request, [
-            'filename' => 'required',
-            'filename.*' => 'image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+        $validator = Validator::make($request->all(), [
             'name' => 'required|string|max:50',
             'color_id' => 'required',
             'sex_id' => 'required',
@@ -255,26 +236,19 @@ class ProductController extends Controller
             'supplier_id' => 'required',
             'category_id' => 'required',
             'product_tail_id' => 'required',
-            'size' => 'required',
-            'price' => 'required',
-            'sale' => 'required',
-            'discount' => 'required',
-            'amount' => 'required'
         ]);
-        if ($request->hasfile('filename')) {
-            foreach ($request->file('filename') as $image) {
-                $name = $image->getClientOriginalName();
-                $image->move(public_path() . '/fronend/images/products/', $name);
-                $list_image[] = $name;
-            }
+        // check validator ?
+        if ($validator->fails()) {
+            return back()->with('message', $validator->errors());;
         }
-        // dd($request->hasfile('size_id'));
-        if ($request->hasfile('size')) {
-            foreach ($request->size as $size) {
-                $name = $size->getClientOriginalName();
-                $list_size[] = $name;
-            }
-        }
+
+        // if ($request->hasfile('filename')) {
+        //     foreach ($request->file('filename') as $image) {
+        //         $name = $image->getClientOriginalName();
+        //         $image->move(public_path() . '/fronend/images/products/', $name);
+        //         $list_image[] = $name;
+        //     }
+        // }
         // dd($id);
         $response = Http::post("http://127.0.0.1:8001/api/product_update/" . $id, [
             // 'code' => $code,

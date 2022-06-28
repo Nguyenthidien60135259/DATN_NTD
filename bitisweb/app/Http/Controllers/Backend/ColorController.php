@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\Validator;
 
 class ColorController extends Controller
 {
@@ -44,6 +45,15 @@ class ColorController extends Controller
     public function saveCreateColor(Request $request)
     {
         $this->AuthLogin();
+        $validator = Validator::make($request->all(), [
+            'code' => 'required|string',
+            'name' => 'required|string'
+        ]);
+    
+        // check validator ?
+        if ($validator->fails()) {
+            return back()->with('message', $validator->errors());;
+        }
         $response = Http::post("http://127.0.0.1:8001/api/color_create", [
             'code' => $request->code,
             'name' => $request->name,
@@ -65,6 +75,15 @@ class ColorController extends Controller
     public function saveUpdateColor(Request $request)
     {
         $this->AuthLogin();
+        $validator = Validator::make($request->all(), [
+            'code' => 'required|string',
+            'name' => 'required|string'
+        ]);
+    
+        // check validator ?
+        if ($validator->fails()) {
+            return back()->with('message', $validator->errors());;
+        }
         $id = $request->id;
         $response = Http::post("http://127.0.0.1:8001/api/color_update/" . $id, [
             'code' => $request->code,

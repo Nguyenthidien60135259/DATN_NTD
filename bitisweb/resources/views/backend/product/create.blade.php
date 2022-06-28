@@ -8,12 +8,19 @@
             </header>
             <div class="panel-body">
                 <div class ="form-group col-md-12">
-                    @php
+                    <!-- @php
                         $success = Session::get('success');
                     @endphp
                     @if($success)
                         <div class="alert alert-success">{{$success}}</div>
-                    @endif
+                    @endif -->
+                    <?php
+                            $message = Session::get('message');
+                            if($message){
+                                echo '<span class="text-alert alert-danger">'.$message.'</span>';
+                                Session::put('message',null);
+                            }
+                        ?>
                 </div>
                 <div class="position-center">
                     <form id="product_create" enctype="multipart/form-data" method="POST">

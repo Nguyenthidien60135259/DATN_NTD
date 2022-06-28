@@ -137,23 +137,23 @@ class ProductController extends Controller
     {
         $product = $this->product->getProductById($id);
         $category = $this->category->getAll();
-        $size = $this->size->getAll();
+        // $size = $this->size->getAll();
         $supplier = $this->supplier->getAll();
         $sex = $this->sex->getAll();
         $product_tail = $this->product_tail->getAll();
         $color = $this->color->getAll();
-        $images = $this->image->getAll();
+        $images = $this->image->getAllImage();
         if ($product) {
             return response()->json([
                 "data" => [
                     "product" => $product,
                     'category' => $category,
-                    'size' => $size,
+                    // 'size' => $size,
                     'supplier' => $supplier,
                     'sex' => $sex,
                     'product_tail' => $product_tail,
                     'color' => $color,
-                    'images' => $images
+                    'image' => $images
                 ]
             ]);
         } else {
@@ -173,8 +173,7 @@ class ProductController extends Controller
                 'supplier_id' => 'required',
                 'stt' => 'required',
                 'category_id' => 'required',
-                'product_tail_id' => 'required',
-                'size' => 'required',
+                'product_tail_id' => 'required'
             ]);
             if ($validator->fails()) {
                 return response()->json(['message' => $validator->errors()], 422);
@@ -199,9 +198,8 @@ class ProductController extends Controller
                 'supplier_id' => $request->supplier_id,
                 'category_id' => $request->category_id,
                 'product_tail_id' => $request->product_tail_id,
-                'created_at' => Carbon::now(),
+                'updated_at' => Carbon::now(),
             ];
-            // dd($data,$id);
             $this->product->updateProduct($id, $data);
             return response()->json([
                 'message' => "Update Product Successfully!!",

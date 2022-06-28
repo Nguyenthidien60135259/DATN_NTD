@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\Validator;
 
 class SupplierController extends Controller
 {
@@ -45,6 +46,15 @@ class SupplierController extends Controller
     public function saveCreateSupplier(Request $request)
     {
         $this->AuthLogin();
+        $validator = Validator::make($request->all(), [
+            'code' => 'required|string',
+            'name' => 'required|string'
+        ]);
+    
+        // check validator ?
+        if ($validator->fails()) {
+            return back()->with('message', $validator->errors());;
+        }
         $response = Http::post("http://127.0.0.1:8001/api/supplier_create", [
             'code' => $request->code,
             'name' => $request->name,
@@ -66,6 +76,15 @@ class SupplierController extends Controller
     public function saveUpdateSupplier(Request $request)
     {
         $this->AuthLogin();
+        $validator = Validator::make($request->all(), [
+            'code' => 'required|string',
+            'name' => 'required|string'
+        ]);
+    
+        // check validator ?
+        if ($validator->fails()) {
+            return back()->with('message', $validator->errors());;
+        }
         $id = $request->id;
         $response = Http::post("http://127.0.0.1:8001/api/supplier_update/" . $id, [
             'code' => $request->code,

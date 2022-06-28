@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Redirect;
+use Illuminate\Support\Facades\Validator;
 
 class CategoryController extends Controller
 {
@@ -43,6 +44,15 @@ class CategoryController extends Controller
     public function saveCreateCategory(Request $request)
     {
         $this->AuthLogin();
+        $validator = Validator::make($request->all(), [
+            'code' => 'required|string',
+            'name' => 'required|string'
+        ]);
+    
+        // check validator ?
+        if ($validator->fails()) {
+            return back()->with('message', $validator->errors());;
+        }
         $response = Http::post("http://127.0.0.1:8001/api/category_create", [
             'code' => $request->code,
             'name' => $request->name,
@@ -64,6 +74,15 @@ class CategoryController extends Controller
     public function saveUpdateCategory(Request $request)
     {
         $this->AuthLogin();
+        $validator = Validator::make($request->all(), [
+            'code' => 'required|string',
+            'name' => 'required|string'
+        ]);
+    
+        // check validator ?
+        if ($validator->fails()) {
+            return back()->with('message', $validator->errors());;
+        }
         $id = $request->id;
         $response = Http::post("http://127.0.0.1:8001/api/category_update/" . $id, [
             'code' => $request->code,

@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\Validator;
 
 class SizeController extends Controller
 {
@@ -18,7 +19,7 @@ class SizeController extends Controller
         } else
             return Redirect::to('/admin')->send();
     }
-    
+
     public function listSize()
     {
         $this->AuthLogin();
@@ -44,6 +45,14 @@ class SizeController extends Controller
     public function saveCreateSize(Request $request)
     {
         $this->AuthLogin();
+        $validator = Validator::make($request->all(), [
+            'size' => 'required|interger'
+        ]);
+
+        // check validator ?
+        if ($validator->fails()) {
+            return back()->with('message', $validator->errors());
+        }
         $response = Http::post("http://127.0.0.1:8001/api/size_create", [
             'size' => $request->name,
         ]);
@@ -58,12 +67,20 @@ class SizeController extends Controller
         $data = json_decode($response);
         $size = $data->data->size;
         // dd($data);
-        return view("backend.size.update",compact('size'));
+        return view("backend.size.update", compact('size'));
     }
 
     public function saveUpdateSize(Request $request)
     {
         $this->AuthLogin();
+        $validator = Validator::make($request->all(), [
+            'size' => 'required|interger'
+        ]);
+
+        // check validator ?
+        if ($validator->fails()) {
+            return back()->with('message', $validator->errors());;
+        }
         $response = Http::post("http://127.0.0.1:8001/api/size_update/" . $request->id, [
             'size' => $request->size,
         ]);
