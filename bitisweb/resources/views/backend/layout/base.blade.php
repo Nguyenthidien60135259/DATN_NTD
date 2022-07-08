@@ -87,7 +87,6 @@
 									echo $name;
 								}
 								?>
-
 							</span>
 							<b class="caret"></b>
 						</a>
@@ -206,7 +205,7 @@
 							</ul>
 						</li>
 
-						<li class="sub-menu">
+						<!-- <li class="sub-menu">
 							<a href="javascript:;">
 								<i class="fa fa-book"></i>
 								<span>Bình luận</span>
@@ -214,12 +213,12 @@
 							<ul class="sub">
 								<li><a href="{{URL::to('/comment_list')}}">Liệt kê bình luận</a></li>
 							</ul>
-						</li>
+						</li> -->
 
 						<li class="sub-menu">
 							<a href="{{URL::to('/order_list')}}">
 								<i class="fa fa-book"></i>
-								<span href="{{URL::to('/order_list')}}">Đơn hàng</span>
+								<span href="{{URL::to('/order_list')}}">Quản lý đơn hàng</span>
 							</a>
 							<!-- <ul class="sub">
 								<li><a href="{{URL::to('/order_list')}}">Quản lý đơn hàng</a></li>

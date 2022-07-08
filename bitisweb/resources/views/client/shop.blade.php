@@ -34,10 +34,10 @@
 
 					<div class="price-range">
 						<!--price-range-->
-						<h2>Price Range</h2>
+						<h2>Chọn giá</h2>
 						<div class="well text-center">
 							<input type="text" class="span2" value="" data-slider-min="0" data-slider-max="600" data-slider-step="5" data-slider-value="[250,450]" id="sl2"><br />
-							<b class="pull-left">$ 0</b> <b class="pull-right">$ 600</b>
+							<b class="pull-left">0</b> <b class="pull-right">2500000</b>
 						</div>
 					</div>
 					<!--/price-range-->
@@ -67,11 +67,11 @@
 									<p>{{$nam->name}}</p>
 									<a href="/detail/{{$nam->id}}" class="btn btn-default add-to-cart"><i class="fa fa-eye"></i>Xem chi tiết</a>
 								</div>
-								<div class="product-overlay">
+								<!-- <div class="product-overlay">
 									<div class="overlay-content">
 										<a href="/detail/{{$nam->id}}" class="btn btn-default add-to-cart"><i class="fa fa-eye"></i>Xem chi tiết</a>
 									</div>
-								</div>
+								</div> -->
 							</div>
 
 							<!-- <div class="choose">
@@ -109,11 +109,6 @@
 											<p>{{$nam->name}}</p>
 											<a href="/detail/{{$nam->id}}" class="btn btn-default add-to-cart"><i class="fa fa-eye"></i>Xem chi tiết</a>
 										</div>
-										<div class="product-overlay">
-											<div class="overlay-content">
-												<a href="/detail/{{$nam->id}}" class="btn btn-default add-to-cart"><i class="fa fa-eye"></i>Xem chi tiết</a>
-											</div>
-										</div>
 									</div>
 								</div>
 							</div>
@@ -132,11 +127,6 @@
 											@endif
 											<p>{{$nu->name}}</p>
 											<a href="/detail/{{$nu->id}}" class="btn btn-default add-to-cart"><i class="fa fa-eye"></i>Xem chi tiết</a>
-										</div>
-										<div class="product-overlay">
-											<div class="overlay-content">
-												<a href="/detail/{{$nu->id}}" class="btn btn-default add-to-cart"><i class="fa fa-eye"></i>Xem chi tiết</a>
-											</div>
 										</div>
 									</div>
 								</div>
@@ -157,11 +147,6 @@
 											<p>{{$trai->name}}</p>
 											<a href="/detail/{{$trai->id}}" class="btn btn-default add-to-cart"><i class="fa fa-eye"></i>Xem chi tiết</a>
 										</div>
-										<div class="product-overlay">
-											<div class="overlay-content">
-												<a href="/detail/{{$trai->id}}" class="btn btn-default add-to-cart"><i class="fa fa-eye"></i>Xem chi tiết</a>
-											</div>
-										</div>
 									</div>
 								</div>
 							</div>
@@ -181,118 +166,14 @@
 											<p>{{$gai->name}}</p>
 											<a href="/detail/{{$gai->id}}" class="btn btn-default add-to-cart"><i class="fa fa-eye"></i>Xem chi tiết</a>
 										</div>
-										<div class="product-overlay">
-											<div class="overlay-content">
-												<a href="/detail/{{$gai->id}}" class="btn btn-default add-to-cart"><i class="fa fa-eye"></i>Xem chi tiết</a>
-											</div>
-										</div>
 									</div>
 								</div>
 							</div>
 							@endforeach
 						</div>
-
 					</div>
 				</div>
 				<!--/category-tab-->
-
-				<div class="recommended_items">
-					<!--recommended_items-->
-					<h2 class="title text-center">Gợi ý dành cho bạn</h2>
-
-					<div id="recommended-item-carousel" class="carousel slide" data-ride="carousel">
-						<div class="carousel-inner">
-							<div class="item active">
-								<div class="col-sm-4">
-									<div class="product-image-wrapper">
-										<div class="single-products">
-											<div class="productinfo text-center">
-												<img src="images/home/recommend1.jpg" alt="" />
-												<h2>$56</h2>
-												<p>Easy Polo Black Edition</p>
-												<a href="#" class="btn btn-default add-to-cart"><i class="fa fa-shopping-cart"></i>Add to cart</a>
-											</div>
-
-										</div>
-									</div>
-								</div>
-								<div class="col-sm-4">
-									<div class="product-image-wrapper">
-										<div class="single-products">
-											<div class="productinfo text-center">
-												<img src="images/home/recommend2.jpg" alt="" />
-												<h2>$56</h2>
-												<p>Easy Polo Black Edition</p>
-												<a href="#" class="btn btn-default add-to-cart"><i class="fa fa-shopping-cart"></i>Add to cart</a>
-											</div>
-
-										</div>
-									</div>
-								</div>
-								<div class="col-sm-4">
-									<div class="product-image-wrapper">
-										<div class="single-products">
-											<div class="productinfo text-center">
-												<img src="images/home/recommend3.jpg" alt="" />
-												<h2>$56</h2>
-												<p>Easy Polo Black Edition</p>
-												<a href="#" class="btn btn-default add-to-cart"><i class="fa fa-shopping-cart"></i>Add to cart</a>
-											</div>
-
-										</div>
-									</div>
-								</div>
-							</div>
-							<div class="item">
-								<div class="col-sm-4">
-									<div class="product-image-wrapper">
-										<div class="single-products">
-											<div class="productinfo text-center">
-												<img src="images/home/recommend1.jpg" alt="" />
-												<h2>$56</h2>
-												<p>Easy Polo Black Edition</p>
-												<a href="#" class="btn btn-default add-to-cart"><i class="fa fa-shopping-cart"></i>Add to cart</a>
-											</div>
-
-										</div>
-									</div>
-								</div>
-								<div class="col-sm-4">
-									<div class="product-image-wrapper">
-										<div class="single-products">
-											<div class="productinfo text-center">
-												<img src="images/home/recommend2.jpg" alt="" />
-												<h2>$56</h2>
-												<p>Easy Polo Black Edition</p>
-												<a href="#" class="btn btn-default add-to-cart"><i class="fa fa-shopping-cart"></i>Add to cart</a>
-											</div>
-
-										</div>
-									</div>
-								</div>
-								<div class="col-sm-4">
-									<div class="product-image-wrapper">
-										<div class="single-products">
-											<div class="productinfo text-center">
-												<img src="images/home/recommend3.jpg" alt="" />
-												<h2>$56</h2>
-												<p>Easy Polo Black Edition</p>
-												<a href="#" class="btn btn-default add-to-cart"><i class="fa fa-shopping-cart"></i>Add to cart</a>
-											</div>
-
-										</div>
-									</div>
-								</div>
-							</div>
-						</div>
-						<a class="left recommended-item-control" href="#recommended-item-carousel" data-slide="prev">
-							<i class="fa fa-angle-left"></i>
-						</a>
-						<a class="right recommended-item-control" href="#recommended-item-carousel" data-slide="next">
-							<i class="fa fa-angle-right"></i>
-						</a>
-					</div>
-				</div>
 
 				<div class="fb-comments" data-href="http://127.0.0.1:8000/shop" data-mobile="http://127.0.0.1:8000/shop" data-width="" data-numposts="30"></div>
 

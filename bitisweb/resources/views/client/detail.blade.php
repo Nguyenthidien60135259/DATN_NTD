@@ -8,10 +8,10 @@
                 <div class="left-sidebar">
                     <div class="price-range">
                         <!--price-range-->
-                        <h2>Price Range</h2>
+                        <h2>Chọn giá</h2>
                         <div class="well text-center">
                             <input type="text" class="span2" value="" data-slider-min="0" data-slider-max="600" data-slider-step="5" data-slider-value="[250,450]" id="sl2"><br />
-                            <b class="pull-left">$ 0</b> <b class="pull-right">$ 600</b>
+                            <b class="pull-left">0</b> <b class="pull-right">2500000</b>
                         </div>
                     </div>
                     <!--/price-range-->
@@ -42,7 +42,7 @@
                                 <!-- <p>{{$product->product_size[0]->price}} VND</p> -->
                                 <!-- <img src="images/product-details/rating.png" alt="" /> -->
                                 <span>
-                                    <span id="price" name="price"><u>đ</u>{{number_format($product->product_size[0]->sale)}}</span>
+                                    <span id="price" name="price"><u></u>{{number_format($product->product_size[0]->sale,0,".",".")}} <u>đ</u></span>
                                     <input type="hidden" name="pro_price" id="pro_price" value="{{$product->product_size[0]->sale}}" />
                                     <label>Quantity:</label>
                                     <input name="qty" type="number" min="1" value="1" />
@@ -162,12 +162,14 @@
 <script type="text/javascript">
     function changeSize(size) {
         console.log('changeSize size: ', size);
-        document.getElementById("price").innerHTML = Intl.NumberFormat('ja-VN', {
+        document.getElementById("price").innerHTML = 
+        Intl.NumberFormat('vi-VN', {
             style: 'currency',
             currency: 'VND'
         }).format(size);
-        var pro_price = document.getElementById("price").innerHTML = size;
-        document.getElementById('pro_price').value = pro_price;
+
+        // var pro_price = document.getElementById("price").innerHTML = size;
+        // document.getElementById('pro_price').value = pro_price;
 
 
     }

@@ -68,8 +68,8 @@ class OrderController extends Controller
         ));
         $response = curl_exec($curl);
         curl_close($curl);
-        echo $response;
-        // return Redirect::to('/order_list');
+        // echo $response;
+        return Redirect::to('/order_list');
     }
 
     public function print_order_PDF(Request $request, $id)

@@ -6,30 +6,10 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Session;
 
 class PageController extends Controller
 {
-    // public function __construct(
-    //     Product $product,
-    //     Color $color,
-    //     Comment $comment,
-    //     Category $category,
-    //     User $user,
-    //     Size $size,
-    //     Images $image,
-    //     Sex $sex
-    // )
-    // {
-    //     $this->product = $product;
-    //     $this->color = $color;
-    //     $this->comment = $comment;
-    //     $this->category = $category;
-    //     $this->user = $user;
-    //     $this->size = $size;
-    //     $this->image = $image;
-    //     $this->sex = $sex;
-    // }
-
     public function index()
     {
         return view('client.home');
@@ -47,7 +27,8 @@ class PageController extends Controller
         $product_trai = $data->data->product_trai;
         $product_gai = $data->data->product_gai;
         // dd($product_nam[0]->product_image[0]->image);
-        return view('client.shop', compact('product_new','product_cheap','product_expensive','product_nam','product_nu','product_trai','product_gai'));
+        // dd($product_new);
+        return view('client.shop', compact('product_new', 'product_cheap', 'product_expensive', 'product_nam', 'product_nu', 'product_trai', 'product_gai'));
     }
 
     public function contact()
@@ -57,7 +38,7 @@ class PageController extends Controller
 
     public function getDetail(Request $request)
     {
-        $response = Http::get("http://127.0.0.1:8001/api/detail/".$request->id);
+        $response = Http::get("http://127.0.0.1:8001/api/detail/" . $request->id);
         $data = json_decode($response);
         // dd($data);
         $product = $data->data->product;
@@ -70,14 +51,15 @@ class PageController extends Controller
         //             return $size->size;
         //         }
         //     }
-           
+
         // }
-// dd($product);
-       
-        return view('client.detail',compact('product','sizes','comment'));
+        // dd($product);
+
+        return view('client.detail', compact('product', 'sizes', 'comment'));
     }
 
-    public function tail(){
+    public function tail()
+    {
         return view('client.detail');
     }
 
@@ -123,28 +105,28 @@ class PageController extends Controller
         $product_expensive = $data->data->product_expensive;
         $product_cheap = $data->data->product_cheap;
         $product_new = $data->data->product_new;
-        $home_products_image=$data->data->home_products_image;
+        $home_products_image = $data->data->home_products_image;
         $home_products_size = $data->data->home_products_size;
         // dd($products_new);
-        return view('client.detail', compact('sexs', 'images','products', 'home_products_size','home_products_image','product_new','product_cheap','product_expensive'));
+        return view('client.detail', compact('sexs', 'images', 'products', 'home_products_size', 'home_products_image', 'product_new', 'product_cheap', 'product_expensive'));
     }
 
     public function search(Request $request)
     {
-        
         $response = Http::post("http://127.0.0.1:8001/api/search/", [
             'keywords' => $request->key
         ]);
         $data = json_decode($response);
         $search_product = $data->data->product_search;
-        return view('client.search',compact('search_product'));
+        return view('client.search', compact('search_product'));
     }
 
-    public function comment(Request $request){
-        $response = Http::post("http://127.0.0.1:8001/api/comment/",[
-            'customer_id'=>$request->customer_id,
-            'product_id'=>$request->product_id,
-            'comment'=>$request->comment
+    public function comment(Request $request)
+    {
+        $response = Http::post("http://127.0.0.1:8001/api/comment/", [
+            'customer_id' => $request->customer_id,
+            'product_id' => $request->product_id,
+            'comment' => $request->comment
         ]);
         $data = json_decode($response);
         // dd($data);
@@ -152,4 +134,39 @@ class PageController extends Controller
         // dd($request->customer_id,$request->product_id,$request->comment);
         return back();
     }
+    public function profile()
+    {
+        $customer_id = Session::get('customer_id');
+        // $id = Auth::user()->id;
+        $response = Http::get("http://127.0.0.1:8001/api/qltk/" . $customer_id);
+        $data = json_decode($response);
+        $customer = $data->data->customer;
+        // dd($customer);
+        return view('client.profile', compact('customer'));
+    }
+
+    public function changePassWord(Request $request){
+        $customer_id = Session::get('customer_id');
+        $response = Http::post("http://127.0.0.1:8001/api/changePassword",[
+         'old_password'=>$request->old_password,
+         'new_password'=>$request->new_password,
+         're_new_password'=>$request->re_new_password,
+         'customer_id' => $customer_id
+        ]);
+        return back()->with('thong bao','Succeedful!');
+    }
+ 
+    public function changeCus(Request $request)
+     {
+        $customer_id = Session::get('customer_id');
+         $response = Http::post("http://127.0.0.1:8001/api/changeCus", [
+             'address' => $request->address,
+             'phone' => $request->phone,
+             'customer_id' => $customer_id
+         ]);
+ 
+         $data = json_decode($response);
+        //  dd($data);
+         return redirect('/profile')->with('thong bao', 'Succeedful!');
+     }
 }

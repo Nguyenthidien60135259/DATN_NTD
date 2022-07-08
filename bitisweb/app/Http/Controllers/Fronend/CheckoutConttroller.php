@@ -22,20 +22,20 @@ class CheckoutConttroller extends Controller
    public function add_user(Request $request)
    {
 
-      //    $validator = Validator::make($request->all(), [
-      //       'name' => 'required|min:6',
-      //       'email' => 'required|email|unique:users,email',
-      //       'password' => 'required|min:6|max:32',
-      //       'passwordAgain' => 'required|same:password',
-      //       'dateOfBirth' => 'required|date',
-      //       'phone' => 'required|between:10,12',
-      //       'sex' => 'required|boolean',
-      //       'address' => 'required|string|between:10,100'
-      //   ]);
+      $validator = Validator::make($request->all(), [
+         'name' => 'required|min:6',
+         'email' => 'required|email|unique:users,email',
+         'password' => 'required|min:6|max:32',
+         'passwordAgain' => 'required|same:password',
+         'dateOfBirth' => 'required|date',
+         'phone' => 'required|between:10,12',
+         'sex' => 'required|boolean',
+         'address' => 'required|string|between:10,100'
+      ]);
 
-      //   if ($validator->fails()) {
-      //       return back()->with('thongbao', $validator->errors());
-      //   }
+      if ($validator->fails()) {
+         return back()->with('message', $validator->errors());
+      }
       $data = array();
       $data['name'] = $request->name;
       $data['email'] = $request->email;
@@ -58,6 +58,15 @@ class CheckoutConttroller extends Controller
 
    public function save_checkout(Request $request)
    {
+      $validator = Validator::make($request->all(), [
+         'shipping_name' => 'required',
+         'shipping_email' => 'required|email|unique:customers,email',
+         'shipping_phone' => 'required|between:10,12',
+         'shipping_address' => 'required|string|between:10,100'
+      ]);
+      if ($validator->fails()) {
+         return back()->with('message', $validator->errors());
+      }
       $data = array();
       $data['shipping_name'] = $request->shipping_name;
       $data['shipping_email'] = $request->shipping_email;
@@ -96,6 +105,13 @@ class CheckoutConttroller extends Controller
 
    public function order_place(Request $request)
    {
+      $validator = Validator::make($request->all(), [
+         'payment_option' => 'required',
+      ]);
+
+      if ($validator->fails()) {
+         return back()->with('message', $validator->errors());
+      }
       //payment
       $data = array();
       $data['payment_method'] = $request->payment_option;
@@ -108,7 +124,7 @@ class CheckoutConttroller extends Controller
       $order_data = array();
       $order_data['customer_id'] = Session::get('customer_id');
       $order_data['shipping_id'] = Session::get('shipping_id');
-      $order_data['total'] = Cart::total(0,',','');
+      $order_data['total'] = Cart::total(0, ',', '');
       $order_data['payment_id'] = $payment_id;
       $order_data['status'] = '0';
       $order_data['created_at'] = Carbon::now();
@@ -121,7 +137,7 @@ class CheckoutConttroller extends Controller
          $size = DB::table('sizes')->where('size', $v_content->options->size)->first();
          $product = DB::table('products')->where('id', $v_content->id)->first();
 
-         $pro_color = substr($product->code,-3);
+         $pro_color = substr($product->code, -3);
          $color = DB::table('colors')->where('code', $pro_color)->first();
          $order_detail_data = array();
          $order_detail_data['order_id'] = $order_id;

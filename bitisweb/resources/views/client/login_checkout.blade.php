@@ -30,6 +30,11 @@
                     <h2>Đăng ký</h2>
                     <form action="{{URL::to('/add_user')}}" method="POST">
                         {{csrf_field()}}
+                        @foreach($errors->all() as $val)
+                        <ul>
+                            <li>{{$message}}</li>
+                        </ul>
+                        @endforeach
                         <input type="text" name="name" placeholder="Tên" />
                         <input type="email" name="email" placeholder="Email" />
                         <input type="password" name="password" placeholder="Mật khẩu" />
@@ -42,7 +47,7 @@
                             <option name="sex" value="1">Nữ</option>
                             <option name="sex" value="0">Nam</option>
                         </select>
-                        <hr/>
+                        <hr />
                         <button type="submit" class="btn btn-default">Signup</button>
                     </form>
                 </div>

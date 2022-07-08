@@ -88,13 +88,13 @@
             {{csrf_field()}}
             <div class="payment-options">
                 <span>
-                    <label><input type="checkbox" name="payment_option" value="1"> Trả qua ATM</label>
+                    <label><input type="checkbox" name="payment_option" disable value="1"> Trả qua ATM</label>
                 </span>
                 <span>
                     <label><input type="checkbox" name="payment_option" value="2"> Trả sau</label>
                 </span>
                 <span>
-                    <label><input type="checkbox" name="payment_option" value="3"> Ứng dụng Paypal</label>
+                    <label><input type="checkbox" name="payment_option" disable value="3"> Ứng dụng Paypal</label>
                 </span>
                 <input type="submit" value="Đặt hàng" name="send_order_place" class="btn btn-primary btn-sm" />
             </div>

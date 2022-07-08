@@ -46,7 +46,10 @@ Route::group(['prefix' => 'api'], function () {
     Route::post('postsignUp', [HomeController::class, 'register']);
     Route::post('search', [HomeController::class, 'search_product']);
     Route::post('comment', [HomeController::class, 'postComment']);
-
+    Route::get('qltk/{id}',[HomeController::class,'qltt']);
+    // Route::get('qltk/{id}',[PagesController::class,'qltt']);
+    Route::post('changePassword',[HomeController::class,'changePassWord']);
+    Route::post('changeCus',[HomeController::class,'changeCus']);
 
     //
     //Category
@@ -244,6 +247,9 @@ Route::get('/checkout', 'App\Http\Controllers\Fronend\Pagecontroller@checkout');
 Route::get('/about', 'App\Http\Controllers\Fronend\Pagecontroller@about');
 Route::get('/detail/{id}', 'App\Http\Controllers\Fronend\Pagecontroller@getDetail');
 Route::post('comment', "App\Http\Controllers\Fronend\Pagecontroller@comment");
+Route::get('/profile',"App\Http\Controllers\Fronend\Pagecontroller@profile");
+Route::post('changePass','App\Http\Controllers\Fronend\Pagecontroller@changePassWord')->name("changePass");
+Route::post('changeCus','App\Http\Controllers\Fronend\Pagecontroller@changeCus');
 
 //cart 
 Route::post('/save_cart', 'App\Http\Controllers\Fronend\CartController@save_cart');

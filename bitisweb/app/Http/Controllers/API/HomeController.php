@@ -13,6 +13,7 @@ use App\Models\Image;
 use App\Models\Category;
 use App\Models\Sex;
 use App\Models\ProductSize;
+use App\Models\Customer;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Validator;
 
@@ -27,9 +28,9 @@ class HomeController extends Controller
         Size $size,
         Image $image,
         Sex $sex,
-        ProductSize $pro_size
-    )
-    {
+        ProductSize $pro_size,
+        Customer $customer
+    ) {
         $this->product = $product;
         $this->color = $color;
         $this->comment = $comment;
@@ -39,16 +40,18 @@ class HomeController extends Controller
         $this->image = $image;
         $this->sex = $sex;
         $this->pro_size = $pro_size;
+        $this->customer = $customer;
     }
 
     public function getProductByNameOrCode(Request $request)
     {
         $key = $request->key;
-        $products = $this->product->getProductByNameOrCode($key); 
+        $products = $this->product->getProductByNameOrCode($key);
         return response()->json(['product' => $products]);
     }
 
-    public function findProduct(Request $request){
+    public function findProduct(Request $request)
+    {
         $input = $request->all();
         $products = $this->product->findProduct($input);
         return response()->json(['product' => $products]);
@@ -61,34 +64,12 @@ class HomeController extends Controller
         $size = $this->size->getAll();
         return response()->json([
             'data' => [
-                'sizes' =>$size,
+                'sizes' => $size,
                 'product' => $product,
-                'comment' => $comment 
+                'comment' => $comment
             ]
         ]);
     }
-
-    // public function menu()
-    // {
-    //     $products = $this->product->getAllProduct();
-    //     $sizes = $this->size->getAllSize();
-    //     $images = $this->image->getAllImage();
-    //     $category = $this->category->getAll();
-    //     $sexs = $this->sex->getAll();
-        
-    //     $productsize = Product::with("productsize")->get();
-    //     $products_image = Product::with("image")->get();
-        
-    //     return response()->json([
-    //         'data' => [
-    //             'products' => $products,
-    //             'sizes' => $sizes,
-    //             'images' => $images,
-    //             'category' => $category,
-    //             'sexs' => $sexs,
-    //         ]
-    //     ]);
-    // }
 
     public function menu()
     {
@@ -97,13 +78,13 @@ class HomeController extends Controller
         $images = $this->image->getAllImage();
         $category = $this->category->getAll();
         $sexs = $this->sex->getAll();
-        $product_new=$this->product->getProductNew();
-        $product_cheap=$this->product->getProductCheap();
-        $product_expensive=$this->product->getProductExpensive();
-        $product_nam=$this->product->getProductNam();
-        $product_nu=$this->product->getProductNu();
-        $product_trai=$this->product->getProductBeTrai();
-        $product_gai=$this->product->getProductBeGai();
+        $product_new = $this->product->getProductNew();
+        $product_cheap = $this->product->getProductCheap();
+        $product_expensive = $this->product->getProductExpensive();
+        $product_nam = $this->product->getProductNam();
+        $product_nu = $this->product->getProductNu();
+        $product_trai = $this->product->getProductBeTrai();
+        $product_gai = $this->product->getProductBeGai();
         // $home_products_size =[];
         // foreach($products as $product){
         //     array_push($home_products_size,$this->pro_size->getSizeByProductId($product->id));
@@ -113,7 +94,7 @@ class HomeController extends Controller
         // foreach($products as $product){
         //     array_push($home_products_image,$this->image->getImageByProductId($product->id));   
         // }
-        
+
         return response()->json([
             'data' => [
                 'products' => $products,
@@ -121,18 +102,19 @@ class HomeController extends Controller
                 'images' => $images,
                 'category' => $category,
                 'sexs' => $sexs,
-                'product_new'=>$product_new,
-                'product_expensive'=>$product_expensive,
-                'product_cheap'=>$product_cheap,
-                'product_nam'=>$product_nam,
-                'product_nu'=>$product_nu,
-                'product_trai'=>$product_trai,
-                'product_gai'=>$product_gai
+                'product_new' => $product_new,
+                'product_expensive' => $product_expensive,
+                'product_cheap' => $product_cheap,
+                'product_nam' => $product_nam,
+                'product_nu' => $product_nu,
+                'product_trai' => $product_trai,
+                'product_gai' => $product_gai
             ]
         ]);
     }
 
-    public function manangerProfile(Request $request){
+    public function manangerProfile(Request $request)
+    {
         $id = $request->id;
         $user = $this->user->getUserId($id);
         return response()->json([
@@ -142,7 +124,8 @@ class HomeController extends Controller
         ]);
     }
 
-    public function add_cart(Request $request){
+    public function add_cart(Request $request)
+    {
         $product = $this->product->getProductById($request->id);
         return response()->json([
             'data' => [
@@ -150,7 +133,7 @@ class HomeController extends Controller
             ]
         ]);
     }
-//ADD user
+    //ADD user
     function register(Request $request)
     {
         $validator = Validator::make($request->all(), [
@@ -182,13 +165,14 @@ class HomeController extends Controller
 
         return response()->json([
             'message' => 'User successfully registered',
-            'data'=>[
-                'user'=>$user,
+            'data' => [
+                'user' => $user,
             ]
         ], 201);
     }
 
-    public function search_product(Request $request){
+    public function search_product(Request $request)
+    {
         $key = $request->keywords;
         $product_search = $this->product->getProductSearch($key);
         return response()->json([
@@ -200,20 +184,19 @@ class HomeController extends Controller
 
     public function postComment(Request $request)
     {
-        $validator = Validator::make($request->all(),[
+        $validator = Validator::make($request->all(), [
             'customer_id' => 'required',
             'product_id' => 'required',
             'comment' => 'required'
-         ]);
-         if($validator->fails())
-         {
-             return response()->json(['message'=>$validator->errors()],422);
-         }
-         
+        ]);
+        if ($validator->fails()) {
+            return response()->json(['message' => $validator->errors()], 422);
+        }
+
         // $cus_id = $request->customer_id;
         // dd($request->customer_id,$request->product_id,$request->comment);
         $data = [
-            "customer_id" =>$request->customer_id,
+            "customer_id" => $request->customer_id,
             "product_id" => $request->product_id,
             "comment" => $request->comment,
             'created_at' => Carbon::now(),
@@ -223,5 +206,68 @@ class HomeController extends Controller
         return response()->json([
             "message" => "Viết bình luận thành công",
         ]);
+    }
+    public function qltt($id, Request $req)
+    {
+        $customer = $this->customer->getCusById($id);
+        // $customer = Customer::find($cus_id);
+        return response()->json([
+            'data' => [
+                'customer' => $customer
+            ]
+        ]);
+    }
+
+    public function changeCus(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'phone' => 'required|between:10,12',
+            'address' => 'required|string|between:10,100'
+        ]);
+        if ($validator->fails()) {
+            return response()->json($validator->errors()->toJson(), 400);
+        }
+        $customer_id = $request->customer_id;
+        $data = [
+            'phone' => $request->phone,
+            'address' => $request->address
+        ];
+
+        $this->customer->updateCus($customer_id, $data);
+
+        return response()->json([
+            'message' => 'Customer successfully changed!!'
+        ], 201);
+    }
+
+    public function changePassWord(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'old_password' => 'required|min:6|max:32',
+            'new_password' => 'required|min:6|max:32',
+            're_new_password' => 'required|same:new_password'
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json($validator->errors()->toJson(), 400);
+        }
+        $customer_id = $request->customer_id;
+
+        // $user = User::where('id', $userId)->update(
+        //     ['password' => base64_encode($request->new_password)]
+        // );
+        $customer = Customer::where('id', $customer_id)->update(
+            ['password' => md5($request->new_password)]
+        );
+
+        $data = [
+            'password' => md5($request->new_password)
+        ];
+
+        $this->customer->updateCus($customer_id, $data);
+        return response()->json([
+            'message' => 'Customer successfully changed password',
+            'customer' => $customer
+        ], 201);
     }
 }

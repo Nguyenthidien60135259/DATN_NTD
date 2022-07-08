@@ -13,4 +13,16 @@ class Customer extends Model
         $result = DB::table('customers')->get();
         return $result;
     }
+
+    public function getCusById($id){
+        $result = DB::table('customers')
+        ->where('id',$id)->first();
+        return $result;
+    }
+
+    public function updateCus($id, $data)
+    {
+        DB::table('customers')->where('id', '=', $id)->update($data);
+    }
+
 }

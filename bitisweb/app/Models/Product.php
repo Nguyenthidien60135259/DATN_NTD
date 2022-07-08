@@ -44,7 +44,7 @@ class Product extends Model
     }
 
     public function getProductSearch($key){
-        $product_seach = Product::with("productImage")->where('name','like','%'.$key.'%')->get();
+        $product_seach = Product::with("productImage")->where('name','like','%'.$key.'%')->orWhere('desc','like','%'.$key.'%')->get();
         return $product_seach;
     }
 
@@ -87,14 +87,17 @@ class Product extends Model
                 ->leftJoin('sizes as size', 'pro_size.size_id', '=', 'size.id');
             $result->where('size.name', 'like', "%{$input['size_name']}%");
         }
+
         if (isset($input['color_name']) && !is_null($input['color_name'])) {
             $result->leftJoin('colors as color', 'products.color_id', '=', 'color.id');
             $result->where('color.name', 'like', "%{$input['color_name']}%");
         }
+
         if (isset($input['sex_name']) && !is_null($input['sex_name'])) {
             $result->leftJoin('sexs as sex', 'products.sex_id', '=', 'sex.id');
             $result->where('sex.name', 'like', "%{$input['sex_name']}%");
         }
+        
         $result->select(
             'products.id',
             'products.code',
