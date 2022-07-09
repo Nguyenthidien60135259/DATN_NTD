@@ -111,13 +111,7 @@
 									<li><a href="/login_checkout">Login-Checkout</a></li>
 								</ul>
 							</li>
-							<li class="dropdown"><a href="#">Blog<i class="fa fa-angle-down"></i></a>
-								<ul role="menu" class="sub-menu">
-									<li><a href="#">Blog List</a></li>
-									<li><a href="#">Blog Single</a></li>
-								</ul>
-							</li>
-							<!-- <li><a href="contact-us.html">Contact</a></li> -->
+							<li><a href="/contact">Contact</a></li>
 						</ul>
 					</div>
 				</div>
@@ -126,7 +120,7 @@
 						{{csrf_field()}}
 						<div class="search_box pull-right">
 							<input type="text" name="key" placeholder="Tìm kiếm sản phẩm" />
-							<input type="submit" style="margin-top:0;color:666;" name="search" class="btn btn-primary btn-sm" value="Tìm kiếm" />
+							<input type="submit" style="margin-top:0;color:white;" name="search" class="btn btn-primary btn-sm" value="Tìm kiếm" />
 						</div>
 					</form>
 

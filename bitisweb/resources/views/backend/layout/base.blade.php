@@ -91,8 +91,8 @@
 							<b class="caret"></b>
 						</a>
 						<ul class="dropdown-menu extended logout">
-							<li><a href="#"><i class=" fa fa-suitcase"></i>Profile</a></li>
-							<li><a href="#"><i class="fa fa-cog"></i> Settings</a></li>
+							<!-- <li><a href="#"><i class=" fa fa-suitcase"></i>Profile</a></li> -->
+							<!-- <li><a href="#"><i class="fa fa-cog"></i> Settings</a></li> -->
 							<li><a href="{{URL::to('/admin/logout')}}"><i class="fa fa-key"></i>Đăng xuất</a></li>
 						</ul>
 					</li>
@@ -260,7 +260,12 @@
 	<script src="http://cdn.datatables.net/1.11.3/js/jquery.dataTables.min.js"></script>
 	<!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script> -->
 	<!-- <script src="//cdn.ckeditor.com/4.16.2/standard/ckeditor.js"></script> -->
-	<script>
+
+	<!-- <script src="//cdnjs.cloudflare.com/ajax/libs/jquery-form-validator/2.3.26/jquery.form-validator.min.js"></script> -->
+	<script type="text/javascript">
+		$.validate({
+
+		});
 		CKEDITOR.replace('ckeditor');
 	</script>
 
@@ -271,6 +276,5 @@
 			});
 		});
 	</script>
-</body>
 
-</html>
+	</script>

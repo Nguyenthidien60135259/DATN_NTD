@@ -29,6 +29,7 @@ body {
     overflow-x: hidden;
     background: url(../images/bg.jpg) no-repeat 0px 0px;
     background-size: cover;
+    height: 100vh;
 }
 
 body a {

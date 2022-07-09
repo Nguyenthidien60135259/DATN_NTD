@@ -19,11 +19,11 @@
                         @csrf
                         <div class="form-group">
 							<label for="exampleInputEmail1">Mã giới tính sản phẩm</label>
-							<input type="text" name="code" class="form-control" value="{{$sex->code}}">
+							<input type="text" name="code" data-validation="length" data-validation-length="1" required data-validation-error-msg="Mã loại chỉ được nhập 1 kí tự" class="form-control" value="{{$sex->code}}">
 						</div>
                         <div class="form-group">
 							<label for="exampleInputEmail1">Tên giới tính sản phẩm</label>
-							<input type="text" name="name" class="form-control" value="{{$sex->name}}">
+							<input type="text" name="name" data-validation="length" data-validation-length="4-255" required data-validation-error-msg="Tên trên 4 kí tự" class="form-control" value="{{$sex->name}}">
 						</div>
                     	<button type="submit" class="btn btn-info">Cập nhật danh mục</button>
                     </form>

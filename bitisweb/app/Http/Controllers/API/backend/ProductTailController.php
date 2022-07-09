@@ -32,8 +32,9 @@ class ProductTailController extends Controller
         if ($validator->fails()) {
             return response()->json(['message' => $validator->errors()], 422);
         }
+        $code = strtoupper($request->code);
         $data = [
-            'code' => $request->code,
+            'code' => $code,
             'name' => $request->name,
             'created_at' => Carbon::now(),
             'updated_at' => Carbon::now()
@@ -68,8 +69,9 @@ class ProductTailController extends Controller
             if ($validator->fails()) {
                 return response()->json(['message' => $validator->errors()], 422);
             }
+            $code = strtoupper($request->code);
             $data = [
-                'code' => $request->code,
+                'code' => $code,
                 'name' => $request->name,
                 'created_at' => Carbon::now(),
             ];

@@ -110,27 +110,65 @@ class ProductController extends Controller
     public function saveCreateProduct(Request $request)
     {
         $this->AuthLogin();
-        $validator = Validator::make($request->all(), [
-            'filename' => 'required',
-            'filename.*' => 'image|mimes:jpeg,png,jpg,gif,svg|max:2048',
-            'name' => 'required|string',
-            'color_id' => 'required',
-            'sex_id' => 'required',
-            'stt' => 'required|integer|max:4',
-            'supplier_id' => 'required',
-            'category_id' => 'required',
-            'product_tail_id' => 'required',
-            'size_id' => 'required',
-            'price' => 'required|integer',
-            'sale' => 'required|integer',
-            'discount' => 'required|integer',
-            'amount' => 'required|integer'
-        ]);
+        // $validator = Validator::make($request->all(), [
+        //     'filename' => 'required',
+        //     'filename.*' => 'image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+        //     'name' => 'required|string',
+        //     'color_id' => 'required',
+        //     'sex_id' => 'required',
+        //     'stt' => 'required|integer|max:4',
+        //     'supplier_id' => 'required',
+        //     'category_id' => 'required',
+        //     'product_tail_id' => 'required',
+        //     'size_id' => 'required',
+        //     'price' => 'required|integer',
+        //     'sale' => 'required|integer',
+        //     'discount' => 'required|integer',
+        //     'amount' => 'required|integer'
+        // ],
+        // [
+        //     'filename.required'=>'Bạn chưa nhập hình ảnh',
+        //     'password.image'=>'Hình ảnh không hợp lệ',
+        //     'name.required'=>'Bạn chưa tên sản phẩm',
+        //     'name.string'=>'Tên sản phẩm là chuổi ký tự',
+        //     'color_id.required'=>'Bạn chưa thêm màu sắc',
+        //     'sex_id.required'=>'Bạn chưa thêm giới tính',
+        //     'stt.required'=>'Bạn chưa nhập số thứ tự sản phẩm',
+        //     'stt.integer'=>'Số thứ tự sản phẩm phải là số nguyên',
+        //     'stt.max'=>'Số thứ tự sản phẩm không lớn hơn 4',
+        //     'supplier_id.required'=>'Bạn chưa thêm nhà cung cấp',
+        //     'category_id.required'=>'Bạn chưa thêm loại sản phẩm',
+        //     'product_tail_id.required'=>'Bạn chưa thêm đuôi sản phẩm',
+        //     'size_id.required'=>'Bạn chưa thêm size',
+        //     'price.integer'=>'Bạn chưa thêm giá tiền',
+        //     'price.required'=>'Bạn chưa thêm giá tiền',
+        //     'discount.required'=>'Bạn chưa thêm giới tính',
+        //     'amount.required'=>'Bạn chưa thêm giới tính',
+        // ]);
 
-        // check validator ?
-        if ($validator->fails()) {
-            return back()->with('message', $validator->errors());;
-        }
+        // // // check validator ?
+        // if ($validator->fails()) {
+        //     return back()->with('thongbao' ,[
+        //         'filename.required'=>'Bạn chưa nhập hình ảnh',
+        //         'password.image'=>'Hình ảnh không hợp lệ',
+        //         'name.required'=>'Bạn chưa tên sản phẩm',
+        //         'name.string'=>'Tên sản phẩm là chuổi ký tự',
+        //         'color_id.required'=>'Bạn chưa thêm màu sắc',
+        //         'sex_id.required'=>'Bạn chưa thêm giới tính',
+        //         'stt.required'=>'Bạn chưa nhập số thứ tự sản phẩm',
+        //         'stt.integer'=>'Số thứ tự sản phẩm phải là số nguyên',
+        //         'stt.max'=>'Số thứ tự sản phẩm không lớn hơn 4',
+        //         'supplier_id.required'=>'Bạn chưa thêm nhà cung cấp',
+        //         'category_id.required'=>'Bạn chưa thêm loại sản phẩm',
+        //         'product_tail_id.required'=>'Bạn chưa thêm đuôi sản phẩm',
+        //         'size_id.required'=>'Bạn chưa thêm size',
+        //         'price.integer'=>'Bạn chưa thêm giá tiền',
+        //         'price.required'=>'Bạn chưa thêm giá tiền',
+        //         'discount.required'=>'Bạn chưa thêm giới tính',
+        //         'amount.required'=>'Bạn chưa thêm giới tính',
+        //     ]);
+        // }
+
 
         $sup = $this->supplier->getSupplierById($request->supplier_id);
         $sup_code = $sup->code;

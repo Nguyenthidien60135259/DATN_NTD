@@ -57,9 +57,9 @@
                             <div class="cart_quantity_button">
                                 <form action="{{ url('/update_qty') }}" method="post">
                                     {{csrf_field()}}
-                                    <input class="cart_quantity_input" type="text" name="cart_quantity" value="{{$v_content->qty}}" autocomplete="off" size="2">
+                                    <input class="cart_quantity_input col-xs-12 col-sm-6" type="text" name="cart_quantity" value="{{$v_content->qty}}" autocomplete="off" size="2">
                                     <input type="hidden" value="{{$v_content->rowId}}" name="row_cart" class="form-control" />
-                                    <input type="submit" value="Cập nhật" name="update_qty" class="btn btn-default btn-sm" />
+                                    <input type="submit" value="Cập nhật" name="update_qty" class="btn btn-default btn-sm col-xs-12 col-sm-6" />
                                 </form>
                             </div>
                         </td>
@@ -120,4 +120,8 @@
 </section>
 <!--/#do_action-->
 <!--/#cart_items-->
+<style>
+    @media (max-width: 767px){
+    }
+</style>
 @endsection

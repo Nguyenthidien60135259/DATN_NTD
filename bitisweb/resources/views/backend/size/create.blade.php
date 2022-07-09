@@ -19,7 +19,7 @@
                         @csrf
                         <div class="form-group">
                             <label for="exampleInputEmail1">Tên size</label>
-                            <input type="text" name="name" class="form-control" placeholder="Nhập số">
+                            <input type="text" name="name" data-validation="number" data-validation-allowing="range[25;49],double" required data-validation-error-msg="Nhập số từ size 25 đến size 49 " class="form-control" placeholder="Nhập số">
                         </div>
                         <button type="submit" class="btn btn-info">Thêm</button>
                     </form>

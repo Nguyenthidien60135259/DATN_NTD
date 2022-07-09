@@ -53,4 +53,14 @@ class ProductSize extends Model
     {
         DB::table('product_sizes')->insert($data);
     }
+    public function getProSizeById($id){
+        $result=DB::table('product_sizes')->where('product_id','=',$id)->get();
+        return $result;
+    }
+
+    public function deleteProductSize($id)
+    {
+        DB::table('product_sizes')->where('product_id', $id)->delete();
+    }
+    
 }

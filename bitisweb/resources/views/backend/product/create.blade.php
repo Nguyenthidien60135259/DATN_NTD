@@ -7,27 +7,32 @@
                 Thêm sản phẩm
             </header>
             <div class="panel-body">
-                <div class ="form-group col-md-12">
-                    <!-- @php
-                        $success = Session::get('success');
-                    @endphp
-                    @if($success)
-                        <div class="alert alert-success">{{$success}}</div>
-                    @endif -->
-                    <?php
-                            $message = Session::get('message');
-                            if($message){
-                                echo '<span class="text-alert alert-danger">'.$message.'</span>';
-                                Session::put('message',null);
-                            }
-                        ?>
+                <div class="form-group col-md-12">
+
                 </div>
                 <div class="position-center">
                     <form id="product_create" enctype="multipart/form-data" method="POST">
                         @csrf
+                        <?php
+                        $message = Session::get('message');
+                        if ($message) {
+                            echo '<span class="text-alert alert-success">' . $message . '</span>';
+                            Session::put('message', null);
+                        }
+                        ?>
+                        <!-- 
+                        @if ($errors->any())
+                        <div class="alert alert-danger">
+                            <ul>
+                                @foreach ($errors->all() as $error)
+                                <li>{{ $error }}</li>
+                                @endforeach
+                            </ul>
+                        </div>
+                        @endif -->
                         <div class="form-group">
                             <label>Tên sản phẩm</label>
-                            <input type="text" name="name" class="form-control" placeholder="Tên sản phẩm">
+                            <input type="text" name="name" class="form-control" data-validation="length" data-validation-length="4-255" required data-validation-error-msg="Làm ơn nhập từ 4-255 ký tự" placeholder="Tên sản phẩm">
                         </div>
                         <div class="form-group">
                             <label>Mô tả sản phẩm</label>
@@ -43,7 +48,7 @@
                         </div>
                         <div class="form-group">
                             <label>Số thứ tự sản phẩm</label>
-                            <input type="text" name="stt" class="form-control" placeholder="Số thứ tự">
+                            <input type="text" data-validation="number" data-validation-allowing="range[1;9999],double" required data-validation-error-msg="Số thứ tự sản phẩm không quá 4 chữ số" required name="stt" class="form-control" placeholder="Số thứ tự">
                         </div>
                         <div class="form-group">
                             <label>Nhà cung cấp sản phẩm</label>
@@ -56,14 +61,14 @@
                         <div class="form-group">
                             <label>Thêm ảnh</label>
                             <div class="input-group control-group increment">
-                                <input type="file" name="filename[]" class="form-control">
+                                <input type="file" name="filename[]" type="file" data-validation="mime size required" data-validation-allowing="jpg,jpeg,png,ico,bmp" data-validation-max-size="300kb" data-validation-error-msg="Vui lòng chọn ảnh" name="filename[]" class="form-control">
                                 <div class="input-group-btn">
                                     <button class="btn btn-success" type="button"><i class="glyphicon glyphicon-plus"></i>Add</button>
                                 </div>
                             </div>
                             <div class="clone hide">
                                 <div class="control-group input-group" style="margin-top:10px">
-                                    <input type="file" name="filename[]" class="form-control">
+                                    <input type="file" name="filename[]" type="file" data-validation="mime size required" data-validation-allowing="jpg,jpeg,png,ico,bmp" data-validation-max-size="300kb" data-validation-error-msg="Vui lòng chọn ảnh" class="form-control">
                                     <div class="input-group-btn">
                                         <button class="btn btn-danger" type="button"><i class="glyphicon glyphicon-remove"></i> Remove</button>
                                     </div>
@@ -165,7 +170,7 @@
                                     <table class="'table table-bordered table-responsive">
                                         <thead>
                                             <tr>
-                                                <th>Size</th>
+                                                <th style="width:100px">Size</th>
                                                 <th>Giá đầu vào</th>
                                                 <th>Giá bán</th>
                                                 <th>Giảm giá</th>
@@ -182,10 +187,10 @@
                                                         @endforeach
                                                     </select>
                                                 </td>
-                                                <td><input type="text" name="price[]" class="form-control"></td>
-                                                <td><input type="text" name="sale[]" class="form-control"></td>
-                                                <td><input type="text" name="discount[]" class="form-control"></td>
-                                                <td><input type="text" name="amount[]" class="form-control"></td>
+                                                <td><input type="text" name="price[]" data-validation="number" data-validation-length="6-8" data-validation-error-msg="Làm ơn nhập từ giá trị từ 6 đến 8 số" required class="form-control"></td>
+                                                <td><input type="text" name="sale[]" data-validation="number" data-validation-length="6-8" data-validation-error-msg="Làm ơn nhập từ giá trị từ 6 đến 8 số" required class="form-control"></td>
+                                                <td><input type="text" name="discount[]" data-validation="number" data-validation-length="max:2" data-validation-error-msg="Làm ơn nhập từ giá trị giảm giá" required class="form-control"></td>
+                                                <td><input type="text" name="amount[]" data-validation="number" data-validation-length="max:2" data-validation-error-msg="Làm ơn nhập số không vượt quá 2" required class="form-control"></td>
                                                 <td><a href="javascript:void(0)" class="btn btn-danger deleteRow">-</a></td>
                                             </tr>
                                         </tbody>
@@ -231,45 +236,9 @@
         display: block;
         font-size: 14px;
     }
-</style>
-<script type="text/javascript">
-    $(document).ready(function() {
-        $(".btn-success").click(function() {
-            var html = $(".clone").html();
-            $(".increment").after(html);
-        });
-        $("body").on("click", ".btn-danger", function() {
-            $(this).parents(".control-group").remove();
-        });
 
-        //
-        // $(".btn-primary").click(function() {
-        //     var html = $(".size").html();
-        //     $(".incre").after(html);
-        // });
-        // $("body").on("click", ".btn-danger", function() {
-        //     $(this).parents(".control-group").remove();
-        // });
-        $('thead').on('click', '.addRow',function(){
-        var tr= "<tr>"+
-                    "<td>"+
-                        "<select name='size_id[]' id='size_id' class='form-control'>"+
-                       " @foreach($size as $s)"+
-                        "<option value='{{$s->id}}'>{{$s->size}}</option>"+
-                        "@endforeach"+
-                       " </select>"+
-                    "</td>"+
-                    "<td><input type='text' name='price[] class='form-control'></td>"+
-                    "<td><input type='text' name='sale[]' class='form-control'></td>"+
-                    "<td><input type='text' name='discount[]' class='form-control'></td>"+
-                    "<td><input type='text' name='amount[]' class='form-control'></td>"+
-                    "<td><a href='javascript:void(0)' class='btn btn-danger deleteRow'>-</a></td>"+
-                "</tr>"
-                $('tbody').append(tr);
-    });
-    $('tbody').on('click', '.deleteRow',function(){
-        $(this).parent().parent().remove();
-    });
-    });
-</script>
+    label.error {
+        color: red;
+    }
+</style>
 @endsection

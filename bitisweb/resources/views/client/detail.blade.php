@@ -99,7 +99,7 @@
                             @if($product->desc == null)
                             <p>Chưa có mô tả</p>
                             @else
-                            <p>{!!$product->desc!!}</p>
+                            <p style="line-height: 2; font-size: medium; margin-left: 4px;">{!!$product->desc!!}</p>
                             @endif
                         </div>
 

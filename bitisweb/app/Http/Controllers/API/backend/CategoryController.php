@@ -34,9 +34,9 @@ class CategoryController extends Controller
         if ($validator->fails()) {
             return response()->json(['message' => $validator->errors()], 422);
         }
-
+        $code = strtoupper($request->code);
         $data = [
-            'code' => $request->code,
+            'code' => $code,
             'name' => $request->name
         ];
         $this->category->addCategory($data);
@@ -71,8 +71,9 @@ class CategoryController extends Controller
             if ($validator->fails()) {
                 return response()->json(['message' => $validator->errors()], 422);
             }
+            $code = strtoupper($request->code);
             $data = [
-                'code' =>$request->code,
+                'code' =>$code,
                 'name'=>$request->name
             ];
             $this->category->updateCategory($id,$data);

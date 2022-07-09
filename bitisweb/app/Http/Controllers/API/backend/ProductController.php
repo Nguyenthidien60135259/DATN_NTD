@@ -15,6 +15,7 @@ use Carbon\Carbon;
 use App\Models\Image;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\File;
+use App\Models\ProductSize;
 
 
 class ProductController extends Controller
@@ -27,7 +28,8 @@ class ProductController extends Controller
         Image $image,
         Sex $sex,
         ProductTail $product_tail,
-        Color $color
+        Color $color,
+        ProductSize $product_size
     ) {
         $this->product = $product;
         $this->category = $category;
@@ -37,6 +39,7 @@ class ProductController extends Controller
         $this->product_tail = $product_tail;
         $this->color = $color;
         $this->image = $image;
+        $this->product_size = $product_size;
     }
 
     public function index()
@@ -215,9 +218,23 @@ class ProductController extends Controller
     {
         $product = $this->product->getProductById($id);
         $image = $this->image->getImageByProductId($id);
+        $productsize = $this->product_size->getProSizeById($id);
+        // dd($productsize);
         if ($product) {
+            if ($image && $productsize) {
+                $this->image->deleteImage($id);
+                $this->product_size->deleteProductSize($id);
+                $this->product->deleteProduct($id);
+                return response()->json(["message" => "Delete successfully!"]);
+            }
             if ($image) {
                 $this->image->deleteImage($id);
+                $this->product->deleteProduct($id);
+                return response()->json(["message" => "Delete successfully!"]);
+            }
+            if ($productsize) {
+               
+                $this->product_size->deleteProductSize($id);
                 $this->product->deleteProduct($id);
                 return response()->json(["message" => "Delete successfully!"]);
             }

@@ -19,11 +19,11 @@
                         @csrf
                         <div class="form-group">
 							<label for="exampleInputEmail1">Mã đuôi sản phẩm</label>
-							<input type="text" name="code" class="form-control" value="{{$product_tail->code}}">
+							<input type="text" name="code" class="form-control" data-validation="number" data-validation-allowing="range[00;99],double" required data-validation-error-msg="Nhập số đuôi 2 số " value="{{$product_tail->code}}">
 						</div>
                         <div class="form-group">
 							<label for="exampleInputEmail1">Tên đuôi sản phẩm</label>
-							<input type="text" name="name" class="form-control" value="{{$product_tail->name}}">
+							<input type="text" name="name" data-validation="length" data-validation-length="4-255" required data-validation-error-msg="Tên trên 4 kí tự" class="form-control" value="{{$product_tail->name}}">
 						</div>
                     	<button type="submit" class="btn btn-info">Cập nhật danh mục</button>
                     </form>

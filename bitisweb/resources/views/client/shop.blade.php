@@ -88,11 +88,11 @@
 
 				<div class="category-tab">
 					<div class="col-sm-12">
-						<ul class="nav nav-tabs">
-							<li class="active"><a href="#tshirt" data-toggle="tab">Sản phẩm Nam</a></li>
-							<li><a href="#blazers" data-toggle="tab">Sản phẩm Nữ</a></li>
-							<li><a href="#sunglass" data-toggle="tab">Sản phẩm Bé Trai</a></li>
-							<li><a href="#kids" data-toggle="tab">Sản phẩm Bé Gái</a></li>
+						<ul class="nav nav-tabs" >
+							<li class="col-xs-12 col-sm-3" class="active" style="padding: 4px;"><a href="#tshirt" data-toggle="tab">Sản phẩm Nam</a></li>
+							<li class="col-xs-12 col-sm-3" style="padding: 4px;"><a href="#blazers" data-toggle="tab" >Sản phẩm Nữ</a></li>
+							<li class="col-xs-12 col-sm-3" style="padding: 4px;"><a href="#sunglass" data-toggle="tab">Sản phẩm Bé Trai</a></li>
+							<li class="col-xs-12 col-sm-3" style="padding: 4px;"><a href="#kids" data-toggle="tab">Sản phẩm Bé Gái</a></li>
 						</ul>
 					</div>
 					<div class="tab-content">

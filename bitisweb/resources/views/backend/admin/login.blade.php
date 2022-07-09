@@ -38,8 +38,8 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 				<li>{{$val}}</li>
 			</ul>
 			@endforeach
-			<input type="email"  class="ggg" name="email" placeholder="Email" >
-			<input type="password" class="ggg" name="password" placeholder="Password" >
+			<input type="email"  class="ggg" name="email" data-validation="email" data-validation-error-msg="nhập đúng định dạng email" required placeholder="Email" >
+			<input type="password" class="ggg" name="password" data-validation="length"  data-validation-length="4-20" data-validation-error-msg="nhập mật khẩu từ 4 đến 20 ký tự" required placeholder="Password" >
 
 				<div class="clearfix"></div>
 				<input type="submit" value="Đăng nhập" name="login">

@@ -169,4 +169,5 @@ class PageController extends Controller
         //  dd($data);
          return redirect('/profile')->with('thong bao', 'Succeedful!');
      }
+
 }

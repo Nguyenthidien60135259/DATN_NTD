@@ -19,7 +19,7 @@
                         @csrf
                         <div class="form-group">
 							<label for="exampleInputEmail1">Size sản phẩm</label>
-							<input type="text" name="size" class="form-control" value="{{$size->size}}">
+							<input type="text" name="size" data-validation="number" data-validation-allowing="range[25;49],double" required data-validation-error-msg="Nhập số từ size 25 đến size 49 " class="form-control" class="form-control" value="{{$size->size}}">
 						</div>
                     	<button type="submit" class="btn btn-info">Cập nhật danh mục</button>
                     </form>

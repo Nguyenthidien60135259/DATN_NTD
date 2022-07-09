@@ -19,10 +19,9 @@
 			<div class="col-md-12">
 				<div class="row">
 					<div class="col-md-12 order-md-last align-items-stretch d-flex">
-						<div class="category-wrap-2 ftco-animate img align-self-stretch d-flex" style="background-image: url(fronend/images/category.jpg);">
+						<div class="category-wrap-2 ftco-animate img align-self-stretch d-flex">
 							<div class="text text-center">
-								<h2>Biti's</h2>
-								<p>Nâng niu bàn chân Việt</p>
+								<img alt="" src="/fronend/images/slide/logo.jpg" style="width:auto;height:100px;">
 								<p>Đổi size freeship trong vòng 1 tuần tại các cửa hàng gần nhất</p>
 								<p><a href="shop" class="btn btn-primary">Đến cửa hàng</a></p>
 							</div>
@@ -36,12 +35,12 @@
 
 <section class="ftco-section ftco-no-pb ftco-no-pt bg-light">
 	<div class="container">
-		<div class="row">
-			<div class="col-md-4 p-md-12 img img-2 d-flex justify-content-center align-items-center" style="background-image: url(images/about.jpg);">
-				<iframe width="360" height="500px" src="https://www.youtube.com/embed/Omjgx7dny9k" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+		<div class="row d-flex">
+			<div class="col-md-4 p-md-12 col-xs-12 img img-2 d-flex justify-content-center align-items-center" style="background-image: url(images/about.jpg);">
+				<iframe height="500px" style="width: 100%;" src="https://www.youtube.com/embed/Omjgx7dny9k" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 			</div>
-			<div class="col-md-8 py-5 wrap-about pb-md-5 ftco-animate">
-				<div class="heading-section-bold mb-4 mt-md-5">
+			<div class="col-md-8 col-xs-12 py-5 wrap-about ftco-animate">
+				<div class="heading-section-bold mb-4 mt-md-5" >
 					<div class="ml-md-0">
 						<h2 class="mb-4">Chào mừng đến với biti's</h2>
 					</div>

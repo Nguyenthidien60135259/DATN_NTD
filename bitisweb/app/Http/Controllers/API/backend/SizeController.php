@@ -44,7 +44,6 @@ class SizeController extends Controller
         ]);
     }
 
-
     public function show($id)
     {
         $size = $this->size->getSizeById($id);

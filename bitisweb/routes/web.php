@@ -124,6 +124,7 @@ Route::group(['prefix' => 'api'], function () {
     Route::get("order_show/{id}", [OrderController::class, 'show']);
     Route::get("print_order/{id}", [OrderController::class, 'print_order']);
     Route::post("order_update/{id}", [OrderController::class, 'update']);
+
     //
     //Login
     Auth::routes();
@@ -144,8 +145,6 @@ Route::group(['prefix' => 'api'], function () {
     Route::get("user_all/{id}", [StatisticalController::class, 'show']);
     Route::get("user_id/{id}", [StatisticalController::class, 'show_id']);
 });
-
-
 
 //ADMIN
 Auth::routes();
@@ -250,6 +249,7 @@ Route::post('comment', "App\Http\Controllers\Fronend\Pagecontroller@comment");
 Route::get('/profile',"App\Http\Controllers\Fronend\Pagecontroller@profile");
 Route::post('changePass','App\Http\Controllers\Fronend\Pagecontroller@changePassWord')->name("changePass");
 Route::post('changeCus','App\Http\Controllers\Fronend\Pagecontroller@changeCus');
+Route::get('/contact','App\Http\Controllers\Fronend\Pagecontroller@contact');
 
 //cart 
 Route::post('/save_cart', 'App\Http\Controllers\Fronend\CartController@save_cart');

@@ -19,11 +19,11 @@
                         @csrf
                         <div class="form-group">
                             <label for="exampleInputEmail1">Mã màu</label>
-                            <input type="text" name="code" class="form-control">
+                            <input type="text" name="code" data-validation="length" data-validation-length="min3,max3" required data-validation-error-msg="Mã loại chỉ được nhập 3 kí tự" class="form-control">
                         </div>
                         <div class="form-group">
                             <label for="exampleInputEmail1">Tên màu</label>
-                            <input type="text" name="name" class="form-control">
+                            <input type="text" name="name" data-validation="length" data-validation-length="4-255" required data-validation-error-msg="Tên trên 4 kí tự" class="form-control">
                         </div>
                         <button type="submit" class="btn btn-info">Thêm</button>
                     </form>

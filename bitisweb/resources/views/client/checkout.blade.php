@@ -22,11 +22,11 @@
                         <div class="form-one">
                             <form action="{{URL::to('/save_checkout')}}" method="POST">
                                 {{csrf_field()}}
-                                <input type="text" name="shipping_email" placeholder="Email*">
-                                <input type="text" name="shipping_name" placeholder="Tên">
-                                <input type="text" name="shipping_address" placeholder="Địa chỉ">
-                                <input type="text" name="shipping_phone" placeholder="Phone">
-                                <textarea name="shipping_note" placeholder="Ghi chú" rows="16"></textarea>
+                                <input type="text" name="shipping_email" data-validation="email" required data-validation-error-msg="Nhập đúng định dạng email" placeholder="Email*">
+                                <input type="text" name="shipping_name" data-validation="length" data-validation-length="2-255" required data-validation-error-msg="Tên trên 2 kí tự" placeholder="Tên">
+                                <input type="text" name="shipping_address" data-validation="length" data-validation-length="10-255" required data-validation-error-msg="Địa chỉ trên 10 kí tự" placeholder="Địa chỉ">
+                                <input type="text" name="shipping_phone" data-validation="number" data-validation-length="10-12" required data-validation-error-msg="Phone từ 10-12 số" placeholder="Phone">
+                                <textarea name="shipping_note" placeholder="Ghi chú" id="the-textarea" rows="10"></textarea>
                                 <input type="submit" value="Gửi" name="send_order" class="btn btn-primary btn-sm" />
                             </form>
                         </div>

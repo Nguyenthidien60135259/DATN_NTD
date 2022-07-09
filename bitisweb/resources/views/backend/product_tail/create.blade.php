@@ -18,12 +18,12 @@
                     <form action="{{ route('product_tail_create') }}" method="post">
                         @csrf
                         <div class="form-group">
-                            <label for="exampleInputEmail1">Mã màu</label>
-                            <input type="text" name="code" class="form-control">
+                            <label for="exampleInputEmail1">Mã đuôi SP</label>
+                            <input type="text" name="code" data-validation="number" data-validation-allowing="range[00;99],double" required data-validation-error-msg="Nhập số đuôi 2 số " class="form-control">
                         </div>
                         <div class="form-group">
-                            <label for="exampleInputEmail1">Tên màu</label>
-                            <input type="text" name="name" class="form-control">
+                            <label for="exampleInputEmail1">Tên đuôi SP</label>
+                            <input type="text" name="name" data-validation="length" data-validation-length="4-255" required data-validation-error-msg="Tên trên 4 kí tự" class="form-control">
                         </div>
                         <button type="submit" class="btn btn-info">Thêm</button>
                     </form>

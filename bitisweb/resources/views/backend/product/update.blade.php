@@ -15,11 +15,11 @@
 			?>
 			<div class="panel-body">
 				<div class="position-center">
-					<form id="/product_update" method="post" enctype="multipart/form-data">
+					<form id="product_update" method="post" enctype="multipart/form-data">
 						@csrf
 						<div class="form-group">
 							<label>Tên sản phẩm</label>
-							<input type="text" name="name" class="form-control" value="{{$product->name}}">
+							<input type="text" name="name" data-validation="length" data-validation-length="4-255" required data-validation-error-msg="Làm ơn nhập từ 4-255 ký tự" class="form-control" value="{{$product->name}}">
 						</div>
 						<div class="form-group">
 							<label>Mô tả sản phẩm</label>
@@ -27,7 +27,7 @@
 						</div>
 						<div class="form-group">
 							<label>Số thứ tự sản phẩm</label>
-							<input type="text" name="stt" class="form-control" value="{{$stt}}">
+							<input type="text" name="stt" data-validation="number" data-validation-allowing="range[1;9999],double" required data-validation-error-msg="Số thứ tự sản phẩm không quá 4 chữ số" required class="form-control" value="{{$stt}}">
 						</div>
 						<div class="form-group">
 							<label>Loại sản phẩm</label>
@@ -96,7 +96,13 @@
 		</section>
 	</div>
 </div>
+
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<style>
+	label.error {
+		color: red;
+	}
+</style>
 <script>
 	$("#update_product").submit(function(event) {
 		event.preventDefault();
@@ -110,7 +116,7 @@
 
 		$.ajax({
 			type: "POST",
-			url: "{{ url('product_update') }}" + '/' + {
+			url: "{{ url('/product_update') }}" + '/' + {
 				$id
 			},
 			data: formData,
@@ -123,4 +129,12 @@
 		});
 	});
 </script>
+<!-- <script type="text/javascript">
+    $(document).ready(function() {
+        //validate
+        $.validate({
+            
+        });
+    });
+</script> -->
 @endsection
