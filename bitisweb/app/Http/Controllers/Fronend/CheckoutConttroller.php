@@ -45,7 +45,22 @@ class CheckoutConttroller extends Controller
       $data['sex'] = $request->sex;
       $data['address'] = $request->address;
       $data['role_id'] = 3;
+      $data['created_at'] = Carbon::now();
+      $data['updated_at'] = Carbon::now();
       $customer_id = DB::table('customers')->insertGetId($data);
+      $dataa=[
+         'name' => $request->name,
+         'email' => $request->email,
+         'password' => md5($request->password),
+         'address' => $request->address,
+         'phone' =>$request->phone,
+         'birthday' =>$request->dateOfBirth,
+         'sex'=>$request->sex,
+         'role_id' => 3,
+         'created_at' => Carbon::now(),
+         'updated_at' => Carbon::now()
+      ];
+       DB::table('users')->insert($dataa);
       Session::put('customer_id', $customer_id);
       Session::put('customer_name', $request->name);
       return redirect('/checkout');
